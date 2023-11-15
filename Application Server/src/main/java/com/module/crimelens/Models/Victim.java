@@ -9,4 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Victim extends Person {
     
+    private CrimeEvent crimeEvent;
 }

@@ -16,6 +16,4 @@ public class Person {
     private String race;
 
     private String gender;
-
-    private CrimeEvent crimeEvent;
 }
