@@ -33,11 +33,6 @@ public class CrimeEventController {
         return null;
     }
 
-    @GetMapping("/classification")
-    public List<CrimeEvent> getCrimeEventsByClassification(@RequestParam String classification) {
-        return null;
-    }
-
     @GetMapping("/location/{location}")
     public List<CrimeEvent> getCrimeEventsByLocation(@PathVariable Location location) {
         return null;
