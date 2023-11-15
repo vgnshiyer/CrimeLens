@@ -11,16 +11,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CrimeEvent {
-    
+
     private Integer id;
 
     private String classification;
 
     private Date crimeDate;
 
-    private List<Person> victims;
+    private List<Victim> victims;
 
-    private List<Person> perpetrators;
+    private List<Perpetrator> perpetrators;
 
     private Location location;
 
