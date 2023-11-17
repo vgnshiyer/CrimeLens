@@ -27,7 +27,7 @@ g = Graph()
     Location hasStreet Literal
 '''
 
-class DataPreprocessor:
+class DataLoader:
 
     def __init__(self, input_file_path, output_file_path):
         self.input_file_path = input_file_path
@@ -91,8 +91,13 @@ class DataPreprocessor:
 
         g.add((location_uri, RDF.type, ns['Location']))
 
-        g.add((location_uri, ns['hasLatitude'], Literal(row['Latitude'], datatype=XSD.decimal)))
-        g.add((location_uri, ns['hasLongitude'], Literal(row['Longitude'], datatype=XSD.decimal)))
+        try:
+            g.add((location_uri, ns['hasLatitude'], Literal(float(row['Latitude']), datatype=XSD.decimal)))
+            g.add((location_uri, ns['hasLongitude'], Literal(float(row['Longitude']), datatype=XSD.decimal)))
+        except ValueError:
+            g.add((location_uri, ns['hasLatitude'], Literal(0, datatype=XSD.decimal)))
+            g.add((location_uri, ns['hasLongitude'], Literal(0, datatype=XSD.decimal)))
+
         g.add((location_uri, ns['hasCity'], Literal(row['BORO'], datatype=XSD.string)))
         g.add((location_uri, ns['hasState'], Literal(row['BORO'], datatype=XSD.string)))
         g.add((location_uri, ns['hasStreet'], Literal(row['LOCATION_DESC'], datatype=XSD.string)))
