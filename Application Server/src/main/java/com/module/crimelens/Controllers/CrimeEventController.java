@@ -3,6 +3,8 @@ package com.module.crimelens.Controllers;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,15 +13,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Models.Location;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
+import com.module.crimelens.Services.CrimeEventService;
 
 @RestController
 @RequestMapping("/api/crime")
 public class CrimeEventController {
+
+    @Autowired
+    private CrimeEventService crimeEventService;
 
     @GetMapping("/")
     public List<CrimeEvent> getAllCrimeEvents(
@@ -29,33 +36,33 @@ public class CrimeEventController {
     }
 
     @GetMapping("/{id}")
-    public CrimeEvent getCrimeEventById(@PathVariable Integer id) {
-        return null;
+    public ResponseEntity<CrimeEvent> getCrimeEventById(@PathVariable Integer id) {
+        return new ResponseEntity<> (this.crimeEventService.getCrimeEventById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/location/{location}")
-    public List<CrimeEvent> getCrimeEventsByLocation(@PathVariable Location location) {
-        return null;
+    @GetMapping("/location/{locationId}")
+    public ResponseEntity<List<CrimeEvent>> getCrimeEventsByLocation(@PathVariable Integer locationId) {
+        return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByLocation(locationId), HttpStatus.OK);
     }
 
-    @GetMapping("/victim/{victim}")
-    public List<CrimeEvent> getCrimeEventsByVictim(@PathVariable Victim victim) {
-        return null;
+    @GetMapping("/victim/{victimId}")
+    public ResponseEntity<List<CrimeEvent>> getCrimeEventsByVictim(@PathVariable Integer victimId) {
+        return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByVictim(victimId), HttpStatus.OK);
     }
 
-    @GetMapping("/perpetrator/{perpetrator}")
-    public List<CrimeEvent> getCrimeEventsByPerpetrator(@PathVariable Perpetrator perpetrator) {
-        return null;
+    @GetMapping("/perpetrator/{perpetratorId}")
+    public ResponseEntity<List<CrimeEvent>> getCrimeEventsByPerpetrator(@PathVariable Integer perpetratorId) {
+        return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByPerpetrator(perpetratorId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/victims")
-    public List<Victim> getVictimsByCrimeEvent(@PathVariable Integer id) {
-        return null;
+    public ResponseEntity<List<Victim>> getVictimsByCrimeEvent(@PathVariable Integer id) {
+        return new ResponseEntity<> (this.crimeEventService.getVictimsByCrimeEvent(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/perpetrators")
-    public List<Victim> getPerpetratorsByCrimeEvent(@PathVariable Integer id) {
-        return null;
+    public ResponseEntity<List<Perpetrator>> getPerpetratorsByCrimeEvent(@PathVariable Integer id) {
+        return new ResponseEntity<> (this.crimeEventService.getPerpetratorsByCrimeEvent(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
