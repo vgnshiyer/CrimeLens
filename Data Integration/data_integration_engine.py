@@ -46,6 +46,15 @@ class DataLoader:
 
     def create_graph(self):
         for row in self.reader:
+
+            try:
+                existing_crime_event = g.value(subject=ns['crime_event' + row['INCIDENT_KEY']], predicate=RDF.type, object=ns['CrimeEvent'])
+
+                if existing_crime_event is not None:
+                    continue
+            except UnboundLocalError:
+                pass
+
             self.add_victim(row)
             self.add_perpetrator(row)
             self.add_location(row)
@@ -61,7 +70,7 @@ class DataLoader:
         g.add((crime_event_uri, RDF.type, ns['CrimeEvent']))
 
         g.add((crime_event_uri, ns['hasCrimeID'], Literal(row['INCIDENT_KEY'], datatype=XSD.integer)))
-        g.add((crime_event_uri, ns['hasCrimeDate'], Literal(row['OCCUR_DATE'], datatype=XSD.date)))
+        g.add((crime_event_uri, ns['hasCrimeDate'], Literal(row['OCCUR_DATE'].replace('/', '-'), datatype=XSD.string)))
 
         if 'OFFENSE' in row: # TODO
             g.add((crime_event_uri, ns['hasClassification'], Literal(row['OFFENSE'], datatype=XSD.string)))

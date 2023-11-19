@@ -1,6 +1,5 @@
 package com.module.crimelens.Controllers;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
 import com.module.crimelens.Models.CrimeEvent;
-import com.module.crimelens.Models.Location;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
 import com.module.crimelens.Services.CrimeEventService;
@@ -30,9 +28,8 @@ public class CrimeEventController {
 
     @GetMapping("/")
     public List<CrimeEvent> getAllCrimeEvents(
-            @RequestParam(required = false) String classification,
-            @RequestParam(required = false) Date date) {
-        return null;
+            @RequestParam(required = false) Integer limit) {
+        return this.crimeEventService.getAllCrimeEvents(limit);
     }
 
     @GetMapping("/{id}")
@@ -45,6 +42,11 @@ public class CrimeEventController {
         return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByLocation(locationId), HttpStatus.OK);
     }
 
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<CrimeEvent>> getCrimeEventsByDate(@PathVariable String date) {
+        return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByDate(date), HttpStatus.OK);
+    }
+
     @GetMapping("/victim/{victimId}")
     public ResponseEntity<List<CrimeEvent>> getCrimeEventsByVictim(@PathVariable Integer victimId) {
         return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByVictim(victimId), HttpStatus.OK);
@@ -53,6 +55,11 @@ public class CrimeEventController {
     @GetMapping("/perpetrator/{perpetratorId}")
     public ResponseEntity<List<CrimeEvent>> getCrimeEventsByPerpetrator(@PathVariable Integer perpetratorId) {
         return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByPerpetrator(perpetratorId), HttpStatus.OK);
+    }
+
+    @GetMapping("/classification/{classification}")
+    public ResponseEntity<List<CrimeEvent>> getCrimeEventsByClassification(@PathVariable String classification) {
+        return new ResponseEntity<> (this.crimeEventService.getCrimeEventsByClassification(classification), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/victims")

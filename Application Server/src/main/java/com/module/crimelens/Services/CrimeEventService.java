@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.module.crimelens.Models.CrimeEvent;
-import com.module.crimelens.Models.Location;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
 import com.module.crimelens.Repositories.CrimeEventRepository;
@@ -17,8 +16,8 @@ public class CrimeEventService {
     @Autowired
     private CrimeEventRepository crimeEventRepository;
     
-    public List<CrimeEvent> getAllCrimeEvents() {
-        return null;
+    public List<CrimeEvent> getAllCrimeEvents(Integer limit) {
+        return this.crimeEventRepository.findAll(limit);
     }
 
     public CrimeEvent getCrimeEventById(Integer id) {
@@ -31,6 +30,10 @@ public class CrimeEventService {
 
     public List<CrimeEvent> getCrimeEventsByLocation(Integer locationId) {
         return this.crimeEventRepository.findByLocation(locationId);
+    }
+
+    public List<CrimeEvent> getCrimeEventsByDate(String date) {
+        return this.crimeEventRepository.findByDate(date);
     }
 
     public List<CrimeEvent> getCrimeEventsByVictim(Integer victimId) {
