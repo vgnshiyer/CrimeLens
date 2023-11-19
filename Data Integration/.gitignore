@@ -1,0 +1,6 @@
+# raw datasets
+raw_data/*
+
+__pycache__/*
+
+.DS_Store
