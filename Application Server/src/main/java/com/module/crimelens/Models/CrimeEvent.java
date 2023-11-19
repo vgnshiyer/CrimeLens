@@ -1,6 +1,5 @@
 package com.module.crimelens.Models;
 
-import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
@@ -16,13 +15,13 @@ public class CrimeEvent {
 
     private String classification;
 
-    private Date crimeDate;
+    private String crimeDate;
 
-    private List<Victim> victims;
+    private Integer locationId;
 
-    private List<Perpetrator> perpetrators;
+    private Integer victimId;
 
-    private Location location;
+    private Integer perpetratorId;
 
     private String description;
 }

@@ -68,20 +68,16 @@ class DataLoader:
         else:
             g.add((crime_event_uri, ns['hasClassification'], Literal('', datatype=XSD.string)))
 
-        victim_uri = ns['victim' + row['INCIDENT_KEY']]
-        perpetrator_uri = ns['perpetrator' + row['INCIDENT_KEY']]
-        location_uri = ns['location' + row['INCIDENT_KEY']]
-
-        g.add((crime_event_uri, ns['hasVictim'], victim_uri))
-        g.add((crime_event_uri, ns['hasPerpetrator'], perpetrator_uri))
-        g.add((crime_event_uri, ns['hasLocation'], location_uri))
+        g.add((crime_event_uri, ns['hasVictimID'], Literal(self.row_count, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasPerpetratorID'], Literal(self.row_count, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasLocationID'], Literal(self.row_count, datatype=XSD.integer)))
 
     def add_victim(self, row):
         victim_uri = ns['victim' + row['INCIDENT_KEY']]
 
         g.add((victim_uri, RDF.type, FOAF.Person))
 
-        g.add((victim_uri, ns['hasVictimID'], Literal(row['INCIDENT_KEY'], datatype=XSD.integer)))
+        g.add((victim_uri, ns['hasVictimID'], Literal(self.row_count, datatype=XSD.integer)))
         g.add((victim_uri, FOAF.age, Literal(row['VIC_AGE_GROUP'], datatype=XSD.string)))
         g.add((victim_uri, FOAF.gender, Literal(row['VIC_SEX'], datatype=XSD.string)))
         g.add((victim_uri, DBP['Race_(human_categorization)'], Literal(row['VIC_RACE'], datatype=XSD.string)))
@@ -91,7 +87,7 @@ class DataLoader:
 
         g.add((perpetrator_uri, RDF.type, ns['Perpetrator']))
 
-        g.add((perpetrator_uri, ns['hasPerpetratorID'], Literal(row['INCIDENT_KEY'], datatype=XSD.integer)))
+        g.add((perpetrator_uri, ns['hasPerpetratorID'], Literal(self.row_count, datatype=XSD.integer)))
         g.add((perpetrator_uri, FOAF.age, Literal(row['PERP_AGE_GROUP'], datatype=XSD.string)))
         g.add((perpetrator_uri, FOAF.gender, Literal(row['PERP_SEX'], datatype=XSD.string)))
         g.add((perpetrator_uri, DBP['Race_(human_categorization)'], Literal(row['PERP_RACE'], datatype=XSD.string)))

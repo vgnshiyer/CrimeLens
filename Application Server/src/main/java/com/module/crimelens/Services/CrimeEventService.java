@@ -2,45 +2,60 @@ package com.module.crimelens.Services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Models.Location;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
+import com.module.crimelens.Repositories.CrimeEventRepository;
 
 @Service
 public class CrimeEventService {
+
+    @Autowired
+    private CrimeEventRepository crimeEventRepository;
     
     public List<CrimeEvent> getAllCrimeEvents() {
         return null;
     }
 
     public CrimeEvent getCrimeEventById(Integer id) {
-        return null;
+        return this.crimeEventRepository.findById(id);
     }
 
     public List<CrimeEvent> getCrimeEventsByClassification(String classification) {
-        return null;
+        return this.crimeEventRepository.findByClassification(classification);
     }
 
-    public List<CrimeEvent> getCrimeEventsByLocation(Location location) {
-        return null;
+    public List<CrimeEvent> getCrimeEventsByLocation(Integer locationId) {
+        return this.crimeEventRepository.findByLocation(locationId);
     }
 
-    public List<CrimeEvent> getCrimeEventsByVictim(Victim victim) {
-        return null;
+    public List<CrimeEvent> getCrimeEventsByVictim(Integer victimId) {
+        return this.crimeEventRepository.findByVictim(victimId);
     }
 
-    public List<CrimeEvent> getCrimeEventsByPerpetrator(Perpetrator perpetrator) {
-        return null;
+    public List<CrimeEvent> getCrimeEventsByPerpetrator(Integer perpetratorId) {
+        return this.crimeEventRepository.findByPerpetrator(perpetratorId);
     }
 
     public List<Victim> getVictimsByCrimeEvent(Integer id) {
+        
+        CrimeEvent crimeEvent = this.crimeEventRepository.findById(id);
+
+        // TODO
+
         return null;
     }
 
     public List<Perpetrator> getPerpetratorsByCrimeEvent(Integer id) {
+        
+        CrimeEvent crimeEvent = this.crimeEventRepository.findById(id);
+
+        // TODO
+
         return null;
     }
 

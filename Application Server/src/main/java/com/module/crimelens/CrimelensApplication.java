@@ -33,7 +33,7 @@ public class CrimelensApplication implements CommandLineRunner {
 		whereClauses.put("hasPerpetrator", "Perpetrator");
 		
 		Map<String, String> filterClauses = new HashMap<>();
-		filterClauses.put("CrimeID", "\"10038624\"^^xsd:string");
+		filterClauses.put("CrimeID", "10038624");
 
 		System.out.println(SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 0));
     }
