@@ -80,6 +80,7 @@ class DataLoader:
 
         g.add((victim_uri, RDF.type, FOAF.Person))
 
+        g.add((victim_uri, ns['hasVictimID'], Literal(row['INCIDENT_KEY'], datatype=XSD.string)))
         g.add((victim_uri, FOAF.age, Literal(row['VIC_AGE_GROUP'], datatype=XSD.string)))
         g.add((victim_uri, FOAF.gender, Literal(row['VIC_SEX'], datatype=XSD.string)))
         g.add((victim_uri, DBP['Race_(human_categorization)'], Literal(row['VIC_RACE'], datatype=XSD.string)))
@@ -89,6 +90,7 @@ class DataLoader:
 
         g.add((perpetrator_uri, RDF.type, ns['Perpetrator']))
 
+        g.add((perpetrator_uri, ns['hasPerpetratorID'], Literal(row['INCIDENT_KEY'], datatype=XSD.string)))
         g.add((perpetrator_uri, FOAF.age, Literal(row['PERP_AGE_GROUP'], datatype=XSD.string)))
         g.add((perpetrator_uri, FOAF.gender, Literal(row['PERP_SEX'], datatype=XSD.string)))
         g.add((perpetrator_uri, DBP['Race_(human_categorization)'], Literal(row['PERP_RACE'], datatype=XSD.string)))
@@ -96,6 +98,7 @@ class DataLoader:
     def add_location(self, row):
         location_uri = ns['location' + row['INCIDENT_KEY']]
 
+        g.add((location_uri, ns['hasLocationID'], Literal(row['INCIDENT_KEY'], datatype=XSD.string)))
         g.add((location_uri, RDF.type, ns['Location']))
 
         try:
