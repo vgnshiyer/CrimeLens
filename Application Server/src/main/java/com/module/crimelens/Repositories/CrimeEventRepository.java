@@ -10,9 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Utilities.ApacheJenaUtilityService;
+import com.module.crimelens.Utilities.CrimeLensUtilityService;
 import com.module.crimelens.Utilities.SparqlQueryUtility;
-
-import org.apache.jena.query.QuerySolution;
 
 @Repository
 public class CrimeEventRepository {
@@ -41,8 +40,14 @@ public class CrimeEventRepository {
                 "hasPerpetratorID", "Perpetrator");
     }
 
-    public List<CrimeEvent> findAll() {
-        return null;
+    public List<CrimeEvent> findAll(Integer limit) {
+            
+            String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, limit == null ? 50 : limit);
+    
+            List<CrimeEvent> crimeEvents = apacheJenaUtilityService
+                    .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
+    
+            return crimeEvents;
     }
 
     public CrimeEvent findById(Integer id) {
@@ -52,19 +57,10 @@ public class CrimeEventRepository {
 
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 1);
 
-        CrimeEvent crimeEvents = apacheJenaUtilityService
-                .<CrimeEvent>getQueryResult(query, endpoint, (QuerySolution querySolution) -> {
-                    CrimeEvent crimeEvent = new CrimeEvent();
-                    crimeEvent.setId(querySolution.get("CrimeID").asLiteral().getInt());
-                    crimeEvent.setClassification(querySolution.get("Classification").asLiteral().getString());
-                    crimeEvent.setCrimeDate(querySolution.get("CrimeDate").asLiteral().getString());
-                    crimeEvent.setLocationId(querySolution.get("Location").asLiteral().getInt());
-                    crimeEvent.setVictimId(querySolution.get("Victim").asLiteral().getInt());
-                    crimeEvent.setPerpetratorId(querySolution.get("Perpetrator").asLiteral().getInt());
-                    return crimeEvent;
-                }).get(0);
+        List<CrimeEvent> crimeEvents = apacheJenaUtilityService
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
-        return crimeEvents;
+        return crimeEvents.get(0);
     }
 
     public List<CrimeEvent> findByClassification(String classification) {
@@ -75,16 +71,7 @@ public class CrimeEventRepository {
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                .<CrimeEvent>getQueryResult(query, endpoint, (QuerySolution querySolution) -> {
-                    CrimeEvent crimeEvent = new CrimeEvent();
-                    crimeEvent.setId(querySolution.get("CrimeID").asLiteral().getInt());
-                    crimeEvent.setClassification(querySolution.get("Classification").asLiteral().getString());
-                    crimeEvent.setCrimeDate(querySolution.get("CrimeDate").asLiteral().getString());
-                    crimeEvent.setLocationId(querySolution.get("Location").asLiteral().getInt());
-                    crimeEvent.setVictimId(querySolution.get("Victim").asLiteral().getInt());
-                    crimeEvent.setPerpetratorId(querySolution.get("Perpetrator").asLiteral().getInt());
-                    return crimeEvent;
-                });
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
         return crimeEvents;
     }
@@ -97,16 +84,20 @@ public class CrimeEventRepository {
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                .<CrimeEvent>getQueryResult(query, endpoint, (QuerySolution querySolution) -> {
-                    CrimeEvent crimeEvent = new CrimeEvent();
-                    crimeEvent.setId(querySolution.get("CrimeID").asLiteral().getInt());
-                    crimeEvent.setClassification(querySolution.get("Classification").asLiteral().getString());
-                    crimeEvent.setCrimeDate(querySolution.get("CrimeDate").asLiteral().getString());
-                    crimeEvent.setLocationId(querySolution.get("Location").asLiteral().getInt());
-                    crimeEvent.setVictimId(querySolution.get("Victim").asLiteral().getInt());
-                    crimeEvent.setPerpetratorId(querySolution.get("Perpetrator").asLiteral().getInt());
-                    return crimeEvent;
-                });
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
+
+        return crimeEvents;
+    }
+
+    public List<CrimeEvent> findByDate(String date) {
+        
+        Map<String, String> filterClauses = Map.of(
+                "CrimeDate", "\"" + date + "\"^^xsd:string");
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
+
+        List<CrimeEvent> crimeEvents = apacheJenaUtilityService
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
         return crimeEvents;
     }
@@ -119,16 +110,7 @@ public class CrimeEventRepository {
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                .<CrimeEvent>getQueryResult(query, endpoint, (QuerySolution querySolution) -> {
-                    CrimeEvent crimeEvent = new CrimeEvent();
-                    crimeEvent.setId(querySolution.get("CrimeID").asLiteral().getInt());
-                    crimeEvent.setClassification(querySolution.get("Classification").asLiteral().getString());
-                    crimeEvent.setCrimeDate(querySolution.get("CrimeDate").asLiteral().getString());
-                    crimeEvent.setLocationId(querySolution.get("Location").asLiteral().getInt());
-                    crimeEvent.setVictimId(querySolution.get("Victim").asLiteral().getInt());
-                    crimeEvent.setPerpetratorId(querySolution.get("Perpetrator").asLiteral().getInt());
-                    return crimeEvent;
-                });
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
         return crimeEvents;
     }
@@ -141,16 +123,7 @@ public class CrimeEventRepository {
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                .<CrimeEvent>getQueryResult(query, endpoint, (QuerySolution querySolution) -> {
-                    CrimeEvent crimeEvent = new CrimeEvent();
-                    crimeEvent.setId(querySolution.get("CrimeID").asLiteral().getInt());
-                    crimeEvent.setClassification(querySolution.get("Classification").asLiteral().getString());
-                    crimeEvent.setCrimeDate(querySolution.get("CrimeDate").asLiteral().getString());
-                    crimeEvent.setLocationId(querySolution.get("Location").asLiteral().getInt());
-                    crimeEvent.setVictimId(querySolution.get("Victim").asLiteral().getInt());
-                    crimeEvent.setPerpetratorId(querySolution.get("Perpetrator").asLiteral().getInt());
-                    return crimeEvent;
-                });
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
         return crimeEvents;
     }
