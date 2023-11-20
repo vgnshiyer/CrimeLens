@@ -32,12 +32,12 @@ public class CrimeEventRepository {
         entity = "CrimeEvent";
 
         whereClauses = Map.of(
-                "hasCrimeID", "CrimeID",
-                "hasClassification", "Classification",
-                "hasCrimeDate", "CrimeDate",
-                "hasLocationID", "Location",
-                "hasVictimID", "Victim",
-                "hasPerpetratorID", "Perpetrator");
+                "cl:hasCrimeID", "CrimeID",
+                "cl:hasClassification", "Classification",
+                "cl:hasCrimeDate", "CrimeDate",
+                "cl:hasLocationID", "Location",
+                "cl:hasVictimID", "Victim",
+                "cl:hasPerpetratorID", "Perpetrator");
     }
 
     public List<CrimeEvent> findAll(Integer limit) {
@@ -60,7 +60,7 @@ public class CrimeEventRepository {
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
-        return crimeEvents.get(0);
+        return crimeEvents.isEmpty() ? null : crimeEvents.get(0);
     }
 
     public List<CrimeEvent> findByClassification(String classification) {
