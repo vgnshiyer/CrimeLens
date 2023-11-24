@@ -92,7 +92,7 @@ public class CrimeEventRepository {
     public List<CrimeEvent> findByDate(String date) {
         
         Map<String, String> filterClauses = Map.of(
-                "CrimeDate", "\"" + date + "\"^^xsd:string");
+                "CrimeDate", "\"" + date + "\"^^xsd:date");
 
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
 
