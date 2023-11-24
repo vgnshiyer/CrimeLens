@@ -27,9 +27,9 @@ public class CrimeEventController {
     private CrimeEventService crimeEventService;
 
     @GetMapping("/")
-    public List<CrimeEvent> getAllCrimeEvents(
+    public ResponseEntity<List<CrimeEvent>> getAllCrimeEvents(
             @RequestParam(required = false) Integer limit) {
-        return this.crimeEventService.getAllCrimeEvents(limit);
+        return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(limit), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
