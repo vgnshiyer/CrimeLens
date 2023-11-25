@@ -39,31 +39,42 @@ class DataLoader:
     def __init__(self, input_file_path, output_file_path):
         self.input_file_path = input_file_path
         self.output_file_path = output_file_path
+        self.index = 0
 
     def read_csv(self):
         csvfile = open(self.input_file_path, 'r', newline='')
         self.reader = csv.DictReader(csvfile)
 
+    def is_existing_crime_event(self, crime_event_id):
+        try:
+            existing_crime_event = g.value(subject=ns['crime_event' + crime_event_id], predicate=RDF.type, object=ns['CrimeEvent'])
+            if existing_crime_event is not None:
+                return True
+            else:
+                return False
+        except UnboundLocalError:
+            return False
+
+    def get_new_row_index(self):
+        self.index += 1
+        return self.index
+
     def create_graph(self):
         for row in self.reader:
-
             # avoid repeated crime events
-            try:
-                existing_crime_event = g.value(subject=ns['crime_event' + row['INCIDENT_KEY']], predicate=RDF.type, object=ns['CrimeEvent'])
-                if existing_crime_event is not None:
-                    continue
-            except UnboundLocalError:
-                pass
+            if self.is_existing_crime_event(row['INCIDENT_KEY']):
+                continue
 
-            victim_id = self.add_victim(row)
-            perpetrator_id = self.add_perpetrator(row)
-            locations_id = self.add_location(row)
-            _ = self.add_crime_event(row, victim_id, perpetrator_id, locations_id)
+            row_index = self.get_new_row_index()
+            self.add_victim(row, row_index)
+            self.add_perpetrator(row, row_index)
+            self.add_location(row, row_index)
+            self.add_crime_event(row, row_index)
 
     def save_graph(self):
         g.serialize(destination=self.output_file_path, format='turtle')
 
-    def add_crime_event(self, row, victim_id, perpetrator_id, location_id) -> int:
+    def add_crime_event(self, row, index):
         crime_event_id = row['INCIDENT_KEY']
         crime_event_uri = ns['crime_event' + str(crime_event_id)]
 
@@ -79,14 +90,12 @@ class DataLoader:
         else:
             g.add((crime_event_uri, ns['hasClassification'], Literal('', datatype=XSD.string)))
 
-        g.add((crime_event_uri, ns['hasVictimID'], Literal(victim_id, datatype=XSD.integer)))
-        g.add((crime_event_uri, ns['hasPerpetratorID'], Literal(perpetrator_id, datatype=XSD.integer)))
-        g.add((crime_event_uri, ns['hasLocationID'], Literal(location_id, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasVictimID'], Literal(index, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasPerpetratorID'], Literal(index, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasLocationID'], Literal(index, datatype=XSD.integer)))
 
-        return int(crime_event_id)
-
-    def add_victim(self, row) -> int:
-        victim_id = data_integration_utility.generate_random_id()
+    def add_victim(self, row, index):
+        victim_id = index
         victim_uri = ns['victim' + str(victim_id)]
 
         g.add((victim_uri, RDF.type, ns['Victim']))
@@ -96,10 +105,8 @@ class DataLoader:
         g.add((victim_uri, FOAF.gender, Literal(row['VIC_SEX'], datatype=XSD.string)))
         g.add((victim_uri, DBP['Race_(human_categorization)'], Literal(row['VIC_RACE'], datatype=XSD.string)))
 
-        return victim_id
-
-    def add_perpetrator(self, row) -> int:
-        perpetrator_id = data_integration_utility.generate_random_id()
+    def add_perpetrator(self, row, index):
+        perpetrator_id = index
         perpetrator_uri = ns['perpetrator' + str(perpetrator_id)]
 
         g.add((perpetrator_uri, RDF.type, ns['Perpetrator']))
@@ -109,10 +116,8 @@ class DataLoader:
         g.add((perpetrator_uri, FOAF.gender, Literal(row['PERP_SEX'], datatype=XSD.string)))
         g.add((perpetrator_uri, DBP['Race_(human_categorization)'], Literal(row['PERP_RACE'], datatype=XSD.string)))
 
-        return perpetrator_id
-
-    def add_location(self, row):
-        location_id = data_integration_utility.generate_random_id()
+    def add_location(self, row, index):
+        location_id = index
         location_uri = ns['location' + str(location_id)]
 
         g.add((location_uri, RDF.type, ns['Location']))
@@ -128,5 +133,3 @@ class DataLoader:
         g.add((location_uri, ns['hasCity'], Literal(row['BORO'], datatype=XSD.string)))
         g.add((location_uri, ns['hasState'], Literal(row['BORO'], datatype=XSD.string)))
         g.add((location_uri, ns['hasStreet'], Literal(row['LOCATION_DESC'], datatype=XSD.string)))
-
-        return location_id

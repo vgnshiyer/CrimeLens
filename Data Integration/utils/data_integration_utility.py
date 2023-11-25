@@ -1,15 +1,6 @@
 import random
 from datetime import datetime
 
-def generate_random_id() -> str:
-    """Generate a random ID.
-
-    Returns:
-        str: A random ID.
-    """
-        
-    return str(random.randint(1, 1000000000))
-
 def format_date(date: str) -> str:
     """Format a date.
 
