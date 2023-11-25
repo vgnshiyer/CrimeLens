@@ -40,20 +40,17 @@ class DataLoader:
         self.input_file_path = input_file_path
         self.output_file_path = output_file_path
         self.index = 0
+        self.crime_ids = set()
 
     def read_csv(self):
         csvfile = open(self.input_file_path, 'r', newline='')
         self.reader = csv.DictReader(csvfile)
 
     def is_existing_crime_event(self, crime_event_id):
-        try:
-            existing_crime_event = g.value(subject=ns['crime_event' + crime_event_id], predicate=RDF.type, object=ns['CrimeEvent'])
-            if existing_crime_event is not None:
-                return True
-            else:
-                return False
-        except UnboundLocalError:
-            return False
+        if crime_event_id in self.crime_ids:
+            return True
+        self.crime_ids.add(crime_event_id)
+        return False
 
     def get_new_row_index(self):
         self.index += 1
@@ -61,7 +58,7 @@ class DataLoader:
 
     def create_graph(self):
         for row in self.reader:
-            # avoid repeated crime events
+            # avoid duplicate crime events
             if self.is_existing_crime_event(row['INCIDENT_KEY']):
                 continue
 
