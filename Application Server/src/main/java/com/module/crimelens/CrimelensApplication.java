@@ -36,6 +36,18 @@ public class CrimelensApplication implements CommandLineRunner {
 		filterClauses.put("CrimeID", "10038624");
 
 		System.out.println(SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 0));
-    }
+
+		System.out.println();
+
+		Map<String, String> data = new HashMap<>();
+		data.put("hasCrimeID", "10038624");
+		data.put("hasClassification", "Theft");
+		data.put("hasCrimeDate", "2021-03-01");
+		data.put("hasLocation", "Downtown");
+		data.put("hasVictim", "Victim456");
+		data.put("hasPerpetrator", "Perpetrator789");
+
+		System.out.println(SparqlQueryUtility.buildInsertQuery(entity,data));
+	}
 
 }

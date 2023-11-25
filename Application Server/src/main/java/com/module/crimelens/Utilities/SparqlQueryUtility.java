@@ -53,4 +53,36 @@ public class SparqlQueryUtility {
         
         return query.toString();
     }
+
+    public static String buildInsertQuery(String entity, Map<String, String> data) {
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT DATA {\n");
+
+        if (entity != null && !entity.isEmpty()) {
+            query.append("\tGRAPH <").append(entity).append("> {\n");
+        }
+
+        String subject = "cl:" + entity;
+
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            String predicate = "cl:" + entry.getKey();
+            String object = formatRDFValue(entry.getValue());
+            
+            query.append("\t\t").append(subject).append(" ").append(predicate).append(" ").append(object).append(" .\n");
+        }
+
+        if (entity != null && !entity.isEmpty()) {
+            query.append("\t}\n");
+        }
+
+        query.append("}");
+        return query.toString();
+
+    }
+
+    private static String formatRDFValue(String value) {
+        // Implement logic to determine if the value is a URI, literal, etc., and format it accordingly
+        // For simplicity, assuming everything is a literal here
+        return "\"" + value + "\"";
+    }
 }
