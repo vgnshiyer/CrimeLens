@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  datastore:
+    build: ./Data Integration/fuseki/
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./data:/fuseki
+    environment:
+      - ADMIN_PASSWORD=admin
+      - JVM_ARGS=-Xmx2g
+    command: >
+      /bin/bash -c "./fuseki-server --file ./datasets/* /ds"
+    networks:
+      - my-network
+
+networks:
+  my-network:
