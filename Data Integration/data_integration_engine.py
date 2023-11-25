@@ -1,3 +1,7 @@
+'''
+Author: Vignesh Iyer
+Date: 11/17/2023
+'''
 import csv
 from rdflib import Graph, Literal, Namespace, RDF, URIRef, XSD
 from rdflib.namespace import FOAF
@@ -13,120 +17,105 @@ g.bind('xsd', XSD)
 g.bind('dbp', DBP)
 g.bind('foaf', FOAF)
 
-'''
-    CrimeEvent a owl:Class
-
-    CrimeEvent hasCrimeID Literal
-    CrimeEvent hasCrimeDate Literal
-    CrimeEvent hasClassification Literal
-
-    Victim a owl:Class
-    Victim hasAge Literal
-    Victim hasSex Literal
-    Victim hasRace Literal
-
-    Location a owl:Class
-
-    Location hasLattiude Decimal
-    Location hasLongitude Decimal
-    Location hasCity Literal
-    Location hasState Literal
-    Location hasStreet Literal
-'''
-
 class DataLoader:
 
-    def __init__(self, input_file_path, output_file_path):
-        self.input_file_path = input_file_path
+    def __init__(self, output_file_path, column_mappings):
         self.output_file_path = output_file_path
+        self.column_mappings = column_mappings
 
-    def read_csv(self):
-        csvfile = open(self.input_file_path, 'r', newline='')
+        self.index = 0
+        self.crime_ids = set()
+
+    def read_csv(self, input_file_path):
+        csvfile = open(input_file_path, 'r', newline='')
         self.reader = csv.DictReader(csvfile)
+
+    def is_existing_crime_event(self, crime_event_id):
+        if crime_event_id in self.crime_ids:
+            return True
+        self.crime_ids.add(crime_event_id)
+        return False
+
+    def get_new_row_index(self):
+        self.index += 1
+        return self.index
 
     def create_graph(self):
         for row in self.reader:
+            crime_event_id = data_integration_utility.get_row_information(row, self.column_mappings['hasCrimeID'])
+            if self.is_existing_crime_event(crime_event_id):
+                continue
 
-            # avoid repeated crime events
-            try:
-                existing_crime_event = g.value(subject=ns['crime_event' + row['INCIDENT_KEY']], predicate=RDF.type, object=ns['CrimeEvent'])
-                if existing_crime_event is not None:
-                    continue
-            except UnboundLocalError:
-                pass
-
-            victim_id = self.add_victim(row)
-            perpetrator_id = self.add_perpetrator(row)
-            locations_id = self.add_location(row)
-            _ = self.add_crime_event(row, victim_id, perpetrator_id, locations_id)
+            row_index = self.get_new_row_index()
+            self.add_victim(row, row_index)
+            self.add_perpetrator(row, row_index)
+            self.add_location(row, row_index)
+            self.add_crime_event(row, row_index)
 
     def save_graph(self):
         g.serialize(destination=self.output_file_path, format='turtle')
 
-    def add_crime_event(self, row, victim_id, perpetrator_id, location_id) -> int:
-        crime_event_id = row['INCIDENT_KEY']
+    def add_crime_event(self, row, index):
+        crime_event_id = data_integration_utility.get_row_information(row, self.column_mappings['hasCrimeID'])
+        crime_event_id = data_integration_utility.format_crime_id(crime_event_id)
         crime_event_uri = ns['crime_event' + str(crime_event_id)]
+        crime_date = data_integration_utility.get_row_information(row, self.column_mappings['hasCrimeDate'])
+        crime_classification = data_integration_utility.get_row_information(row, self.column_mappings['hasClassification'])
 
         g.add((crime_event_uri, RDF.type, ns['CrimeEvent']))
-
         g.add((crime_event_uri, ns['hasCrimeID'], Literal(crime_event_id, datatype=XSD.integer)))
         
-        occur_date = row['OCCUR_DATE']
-        g.add((crime_event_uri, ns['hasCrimeDate'], Literal(data_integration_utility.format_date(occur_date), datatype=XSD.date)))
+        g.add((crime_event_uri, ns['hasCrimeDate'], Literal(data_integration_utility.format_date(crime_date), datatype=XSD.date)))
+        g.add((crime_event_uri, ns['hasClassification'], Literal(crime_classification, datatype=XSD.string)))
 
-        if 'OFFENSE' in row: # TODO
-            g.add((crime_event_uri, ns['hasClassification'], Literal(row['OFFENSE'], datatype=XSD.string)))
-        else:
-            g.add((crime_event_uri, ns['hasClassification'], Literal('', datatype=XSD.string)))
+        g.add((crime_event_uri, ns['hasVictimID'], Literal(index, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasPerpetratorID'], Literal(index, datatype=XSD.integer)))
+        g.add((crime_event_uri, ns['hasLocationID'], Literal(index, datatype=XSD.integer)))
 
-        g.add((crime_event_uri, ns['hasVictimID'], Literal(victim_id, datatype=XSD.integer)))
-        g.add((crime_event_uri, ns['hasPerpetratorID'], Literal(perpetrator_id, datatype=XSD.integer)))
-        g.add((crime_event_uri, ns['hasLocationID'], Literal(location_id, datatype=XSD.integer)))
-
-        return int(crime_event_id)
-
-    def add_victim(self, row) -> int:
-        victim_id = data_integration_utility.generate_random_id()
+    def add_victim(self, row, victim_id):
         victim_uri = ns['victim' + str(victim_id)]
+        victim_age_group = data_integration_utility.get_row_information(row, self.column_mappings['VictimHasAge'])
+        victim_gender = data_integration_utility.get_row_information(row, self.column_mappings['VictimHasGender'])
+        victim_race = data_integration_utility.get_row_information(row, self.column_mappings['VictimHasRace'])
 
         g.add((victim_uri, RDF.type, ns['Victim']))
 
         g.add((victim_uri, ns['hasVictimID'], Literal(victim_id, datatype=XSD.integer)))
-        g.add((victim_uri, FOAF.age, Literal(row['VIC_AGE_GROUP'], datatype=XSD.string)))
-        g.add((victim_uri, FOAF.gender, Literal(row['VIC_SEX'], datatype=XSD.string)))
-        g.add((victim_uri, DBP['Race_(human_categorization)'], Literal(row['VIC_RACE'], datatype=XSD.string)))
+        g.add((victim_uri, FOAF.age, Literal(victim_age_group, datatype=XSD.string)))
+        g.add((victim_uri, FOAF.gender, Literal(victim_gender, datatype=XSD.string)))
+        g.add((victim_uri, DBP['Race_(human_categorization)'], Literal(victim_race, datatype=XSD.string)))
 
-        return victim_id
-
-    def add_perpetrator(self, row) -> int:
-        perpetrator_id = data_integration_utility.generate_random_id()
+    def add_perpetrator(self, row, perpetrator_id):
         perpetrator_uri = ns['perpetrator' + str(perpetrator_id)]
+        perpetrator_age_group = data_integration_utility.get_row_information(row, self.column_mappings['PerpHasAge'])
+        perpetrator_gender = data_integration_utility.get_row_information(row, self.column_mappings['PerpHasGender'])
+        perpetrator_race = data_integration_utility.get_row_information(row, self.column_mappings['PerpHasRace'])
 
         g.add((perpetrator_uri, RDF.type, ns['Perpetrator']))
 
         g.add((perpetrator_uri, ns['hasPerpetratorID'], Literal(perpetrator_id, datatype=XSD.integer)))
-        g.add((perpetrator_uri, FOAF.age, Literal(row['PERP_AGE_GROUP'], datatype=XSD.string)))
-        g.add((perpetrator_uri, FOAF.gender, Literal(row['PERP_SEX'], datatype=XSD.string)))
-        g.add((perpetrator_uri, DBP['Race_(human_categorization)'], Literal(row['PERP_RACE'], datatype=XSD.string)))
+        g.add((perpetrator_uri, FOAF.age, Literal(perpetrator_age_group, datatype=XSD.string)))
+        g.add((perpetrator_uri, FOAF.gender, Literal(perpetrator_gender, datatype=XSD.string)))
+        g.add((perpetrator_uri, DBP['Race_(human_categorization)'], Literal(perpetrator_race, datatype=XSD.string)))
 
-        return perpetrator_id
-
-    def add_location(self, row):
-        location_id = data_integration_utility.generate_random_id()
+    def add_location(self, row, location_id):
         location_uri = ns['location' + str(location_id)]
+        location_lat = data_integration_utility.get_row_information(row, self.column_mappings['hasLatitude'])
+        location_lon = data_integration_utility.get_row_information(row, self.column_mappings['hasLongitude'])
+        location_city = data_integration_utility.get_row_information(row, self.column_mappings['hasCity'])
+        location_state = data_integration_utility.get_row_information(row, self.column_mappings['hasState'])
+        location_street = data_integration_utility.get_row_information(row, self.column_mappings['hasStreet'])
 
         g.add((location_uri, RDF.type, ns['Location']))
         g.add((location_uri, ns['hasLocationID'], Literal(location_id, datatype=XSD.integer)))
 
         try:
-            g.add((location_uri, DBP.Latitude, Literal(float(row['Latitude']), datatype=XSD.decimal)))
-            g.add((location_uri, DBP.Longitude, Literal(float(row['Longitude']), datatype=XSD.decimal)))
-        except ValueError:
+            g.add((location_uri, DBP.Latitude, Literal(float(location_lat), datatype=XSD.decimal)))
+            g.add((location_uri, DBP.Longitude, Literal(float(location_lon), datatype=XSD.decimal)))
+        except Exception:
             g.add((location_uri, DBP.Latitude, Literal(0, datatype=XSD.decimal)))
             g.add((location_uri, DBP.Longitude, Literal(0, datatype=XSD.decimal)))
 
-        g.add((location_uri, ns['hasCity'], Literal(row['BORO'], datatype=XSD.string)))
-        g.add((location_uri, ns['hasState'], Literal(row['BORO'], datatype=XSD.string)))
-        g.add((location_uri, ns['hasStreet'], Literal(row['LOCATION_DESC'], datatype=XSD.string)))
-
-        return location_id
+        g.add((location_uri, ns['hasCity'], Literal(location_city, datatype=XSD.string)))
+        g.add((location_uri, ns['hasState'], Literal(location_state, datatype=XSD.string)))
+        g.add((location_uri, ns['hasStreet'], Literal(location_street, datatype=XSD.string)))
