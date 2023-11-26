@@ -27,72 +27,57 @@ Date: 11/17/2023
 from data_integration_engine import DataLoader
 
 INPUT_FILES_PATH = [
-    'raw_data/NYPD_Shooting_Incident_Data__Historic_.csv',
-    'raw_data/Crime_Data_from_2020_to_Present.csv',
-    'raw_data/homicide-data.csv']
+    # 'raw_data/NYPD_Shooting_Incident_Data__Historic_.csv',
+    # 'raw_data/Crime_Data_from_2020_to_Present.csv',
+    # 'raw_data/homicide-data.csv'
+    "raw_data/All_Crime_Data.csv"
+    # "NYPD_Shooting_Incident_Data__Historic_.csv"
+    ]
     
 OUTPUT_FILE_PATH = 'fuseki/datasets/crime_lens.ttl'
 
 column_mappings = {
     'hasCrimeID': [
-        'INCIDENT_KEY',
-        'uid',
-        'DR_NO'
+        'id'
     ],
     'hasCrimeDate': [
-        'OCCUR_DATE',
-        'reported_date',
-        'DATE OCC'
+        'crime_date'
     ],
     'hasClassification': [
-        'Crm Cd Desc'
+        "description"
     ],
     'VictimHasAge': [
-        'VIC_AGE_GROUP',
-        'victim_age',
-        'Vict Age'
+        'victim_age_range'
     ],
     'VictimHasGender': [
-        'VIC_SEX',
-        'victim_sex',
-        'Vict Sex'
+        'victim_sex'
     ],
     'VictimHasRace': [
-        'VIC_RACE',
-        'vitcim_race',
-        'Vict Descent'
+        'vitcim_race'
     ],
     'PerpHasAge': [
-        'PERP_AGE_GROUP'
+        'perpetrator_age'
     ],
     'PerpHasGender': [
-        'PERP_SEX'
+        'perpetrator_sex'
     ],
     'PerpHasRace': [
-        'PERP_RACE',
+        'perpetrator_race'
     ],
     'hasLatitude': [
-        'Latitude',
-        'lat',
-        'LAT'
+        'lat'
     ],
     'hasLongitude': [
-        'Longitude',
-        'lon',
-        'LON'
+        'long'
     ],
     'hasCity': [
-        'BORO',
-        'city',
-        'AREA NAME'
+        'city'
     ],
     'hasState': [
         'state',
     ],
     'hasStreet': [
-        'LOCATION_DESC'
-        'Street',
-        'LOCATION'
+        'street'
     ]
 }
 
