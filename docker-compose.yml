@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  app:
+    build: ./Application Server/
+    ports:
+      - "8080:8080"
+    command: >
+      /bin/bash -c "java -jar app.jar"
+    networks:
+      - crimelens
+
+  datastore:
+    build: ./Data Integration/fuseki/
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./data:/fuseki
+    environment:
+      - ADMIN_PASSWORD=admin
+      - JVM_ARGS=-Xmx2g
+    command: >
+      /bin/bash -c "./fuseki-server --file ./datasets/* /ds"
+    networks:
+      - crimelens
+
+networks:
+  crimelens:

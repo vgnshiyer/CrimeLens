@@ -31,7 +31,7 @@ public class SparqlQueryUtility {
 
         int i = 0;
         for (Map.Entry<String, String> whereClause : whereClauses.entrySet()) {
-            query.append(" cl:").append(whereClause.getKey()).append(" ?").append(whereClause.getValue()).append((i == whereClauses.size() - 1 ? ".\n" : ";\n"));
+            query.append(" ").append(whereClause.getKey()).append(" ?").append(whereClause.getValue()).append((i == whereClauses.size() - 1 ? ".\n" : ";\n"));
         }
 
         // FILTER Clauses

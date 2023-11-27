@@ -16,7 +16,7 @@ import com.module.crimelens.Utilities.SparqlQueryUtility;
 @Repository
 public class CrimeEventRepository {
 
-    private String endpoint = "http://localhost:3030/ds";
+    private String endpoint = "http://datastore:3030/ds";
 
     @Autowired
     private ApacheJenaUtilityService apacheJenaUtilityService;
@@ -32,12 +32,12 @@ public class CrimeEventRepository {
         entity = "CrimeEvent";
 
         whereClauses = Map.of(
-                "hasCrimeID", "CrimeID",
-                "hasClassification", "Classification",
-                "hasCrimeDate", "CrimeDate",
-                "hasLocationID", "Location",
-                "hasVictimID", "Victim",
-                "hasPerpetratorID", "Perpetrator");
+                "cl:hasCrimeID", "CrimeID",
+                "cl:hasClassification", "Classification",
+                "cl:hasCrimeDate", "CrimeDate",
+                "cl:hasLocationID", "Location",
+                "cl:hasVictimID", "Victim",
+                "cl:hasPerpetratorID", "Perpetrator");
     }
 
     public List<CrimeEvent> findAll(Integer limit) {
@@ -60,7 +60,7 @@ public class CrimeEventRepository {
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
 
-        return crimeEvents.get(0);
+        return crimeEvents.isEmpty() ? null : crimeEvents.get(0);
     }
 
     public List<CrimeEvent> findByClassification(String classification) {
@@ -92,7 +92,7 @@ public class CrimeEventRepository {
     public List<CrimeEvent> findByDate(String date) {
         
         Map<String, String> filterClauses = Map.of(
-                "CrimeDate", "\"" + date + "\"^^xsd:string");
+                "CrimeDate", "\"" + date + "\"^^xsd:date");
 
         String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
 
