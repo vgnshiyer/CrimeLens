@@ -1,5 +1,6 @@
 package com.module.crimelens.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,12 @@ public class CrimeEventService {
 
     @Autowired
     private CrimeEventRepository crimeEventRepository;
+
+    @Autowired
+    private VictimService victimService;
+
+    @Autowired
+    private PerpetratorService perpetratorService;
     
     public List<CrimeEvent> getAllCrimeEvents(Integer limit) {
         return this.crimeEventRepository.findAll(limit);
@@ -48,18 +55,24 @@ public class CrimeEventService {
         
         CrimeEvent crimeEvent = this.crimeEventRepository.findById(id);
 
-        // TODO
+        Integer victimId = crimeEvent.getVictimId();
 
-        return null;
+        List<Victim> victims = new ArrayList<Victim>();
+        victims.add(this.victimService.getVictimById(victimId));
+
+        return victims;
     }
 
     public List<Perpetrator> getPerpetratorsByCrimeEvent(Integer id) {
         
         CrimeEvent crimeEvent = this.crimeEventRepository.findById(id);
 
-        // TODO
+        Integer perpetratorId = crimeEvent.getPerpetratorId();
 
-        return null;
+        List<Perpetrator> perpetrators = new ArrayList<Perpetrator>();
+        perpetrators.add(this.perpetratorService.getPerpetratorById(perpetratorId));
+
+        return perpetrators;
     }
 
     public CrimeEvent createCrimeEvent(CrimeEvent crimeEvent) {
