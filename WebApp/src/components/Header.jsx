@@ -127,10 +127,10 @@ export default function PrimarySearchAppBar() {
                     </IconButton>
                     <Typography
                         onClick={() => { navigate('/'); }}
-                        variant="h6"
+                        variant="h4"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}
+                        sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: "bold", cursor: "pointer" }}
                     >
                         Crime Lens
                     </Typography>

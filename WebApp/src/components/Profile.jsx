@@ -23,7 +23,7 @@ export default function Profile() {
                 <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
-                            Chaitya Dharmeshbhai Sanghavi
+                            <h2>Chaitya Dharmeshbhai Sanghavi</h2>
                             <br />
                             Computer Software Engineering
                             <br />
@@ -38,7 +38,7 @@ export default function Profile() {
                 <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
-                            Vignesh Venkatachalam Iyer
+                            <h2>Vignesh Venkatachalam Iyer</h2>
                             <br />
                             Computer Software Engineering
                             <br />
@@ -53,7 +53,7 @@ export default function Profile() {
                 <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
-                            Devanshu Amitkumar Desai
+                            <h2>Devanshu Amitkumar Desai</h2>
                             <br />
                             Computer Software Engineering
                             <br />
@@ -68,7 +68,7 @@ export default function Profile() {
                 <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
-                            Naga Venkata Sri Sai Eshwar Gulupalli
+                            <h2>Naga Venkata Sri Sai Eshwar Gulupalli</h2>
                             <br />
                             Computer Software Engineering
                             <br />
@@ -83,7 +83,7 @@ export default function Profile() {
                 <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
-                            Naga Venkata Dharani Viswanadh Chinta
+                            <h2>Naga Venkata Dharani Viswanadh Chinta</h2>
                             <br />
                             Computer Software Engineering
                             <br />
