@@ -1,46 +1,50 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiYnJheDI1MDciLCJhIjoiY2xsYWY1enc3MWo4ZjNsbndnanZjaGdxciJ9.AbY1vj4s-fm7bNUERWBEGg';
+import { environment } from '../../environment'
 
-class MapComponent extends Component {
+mapboxgl.accessToken = environment.mapbox.accessToken;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            lng: 5,
-            lat: 34,
-            zoom: 2
-        };
-    }
+const MapComponent = () => {
+    const mapContainerRef = useRef(null);
+    const map = useRef(null);
 
-    componentDidMount() {
-        const { lng, lat, zoom } = this.state;
-        const map = new mapboxgl.Map({
-            container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/dark-v10',
+    const [lng, setLng] = useState(111.93);
+    const [lat, setLat] = useState(33.47);
+    const [zoom, setZoom] = useState(10);
+
+    useEffect(() => {
+        // if (map.current) return; // initialize map only once
+        map.current = new mapboxgl.Map({
+            container: mapContainerRef.current,
+            style: 'mapbox://styles/mapbox/outdoors-v12',
             center: [lng, lat],
             zoom: zoom
         });
-        map.on('move', () => {
-            const { lng, lat } = map.getCenter();
-            this.setState({
-                lng: lng.toFixed(4),
-                lat: lat.toFixed(4),
-                zoom: map.getZoom().toFixed(2)
-            });
-        });
-    }
+        console.log(map.current);
+        console.log(environment.mapbox.accessToken);
 
-    render() {
-        const { lng, lat, zoom } = this.state;
-        return (
-            <div>
-                <div ref={el => this.mapContainer = el} style={{ width: '75%', height: '500px' }} />
-                <div>Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}</div>
+        // add navigation control (the +/- zoom buttons)
+        map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+        // map onload event 
+        map.current.on('load', () => {
+            console.log("map loaded");
+            map.current.resize();
+        })
+
+        // clean up on unmount
+        return () => map.current.remove();
+    }, [lat, lng, zoom]);
+
+    return (
+        <div>
+            <div style={{ width: "100%", height: "400px" }} ref={mapContainerRef} />
+            <div className="sidebar">
+                Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
             </div>
-        )
-    }
-}
+        </div>
+    );
+};
 
 export default MapComponent;
