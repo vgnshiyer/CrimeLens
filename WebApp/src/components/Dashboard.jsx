@@ -1,6 +1,7 @@
+import Map from './MapComponent'
 
 export default function Dashboard() {
   return (
-    <div>Dashboard</div>
-  )
+    <><p>map</p><Map /></>
+  );
 }
