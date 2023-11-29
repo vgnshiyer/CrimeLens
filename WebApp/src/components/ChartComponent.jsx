@@ -30,8 +30,6 @@ const valueFormatter = (value) => `${value}`;
 
 export default function ChartComponent({crimeTypes, crimeCountByYear}) {
 
-    console.log('from chart component', crimeTypes, crimeCountByYear)
-
     return (
         <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'auto', width: '100%' }}>
             <PieChart

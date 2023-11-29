@@ -5,7 +5,7 @@ import { environment } from '../../environment'
 
 mapboxgl.accessToken = environment.mapbox.accessToken;
 
-const MapComponent = () => {
+const MapComponent = ({crimeLocations}) => {
     const mapContainerRef = useRef(null);
     const map = useRef(null);
 
@@ -21,21 +21,40 @@ const MapComponent = () => {
             center: [lng, lat],
             zoom: zoom
         });
-        console.log(map.current);
-        console.log(environment.mapbox.accessToken);
 
         // add navigation control (the +/- zoom buttons)
         map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
         // map onload event 
         map.current.on('load', () => {
-            console.log("map loaded");
-            map.current.resize();
+            map.current.addSource('crimeLocations', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: crimeLocations.map(location => ({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [location.lng, location.lat]
+                        }
+                    }))
+                }
+            });
+    
+            map.current.addLayer({
+                id: 'crimeLocations',
+                type: 'circle',
+                source: 'crimeLocations',
+                paint: {
+                    'circle-radius': 10,
+                    'circle-color': '#f00'
+                }
+            });
         })
 
         // clean up on unmount
         return () => map.current.remove();
-    }, [lat, lng, zoom]);
+    }, [crimeLocations, lat, lng, zoom]);
 
     return (
         <div>

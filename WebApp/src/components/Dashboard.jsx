@@ -32,8 +32,6 @@ export default function Dashboard() {
     useEffect(() => {
         axios.get(api_url + '/' + '?limit=1000&fromYear=2015')
             .then(response => {
-                console.log('response', response.data);
-
                 const uniqueCrimeTypes = response.data.reduce((acc, current) => {
                     acc[current.classification] = (acc[current.classification] || 0) + 1;
                     return acc;
@@ -59,9 +57,6 @@ export default function Dashboard() {
                     lng: crime.location.lon
                 }));
 
-                console.log('crimeCountData', crimeCountData);
-                console.log('crimeLocationData', crimeLocationData);
-
                 crimeCountData.sort((a, b) => a.year - b.year);
 
                 setCrimeTypes(typeData);
@@ -79,7 +74,7 @@ export default function Dashboard() {
                 <Filter setCrimeCountByYear={setCrimeCountByYear} setCrimeLocations={setCrimeLocations} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
-                <MapComponent />
+                <MapComponent crimeLocations={crimeLocations} />
                 <Chart crimeTypes={crimeTypes} crimeCountByYear={crimeCountByYear} />
             </div>
             <div style={{ width: '20%' }}>
