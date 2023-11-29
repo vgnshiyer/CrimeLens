@@ -5,14 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import com.module.crimelens.Utilities.SparqlQueryUtility;
 
 @SpringBootApplication
 public class CrimelensApplication implements CommandLineRunner {
+
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(CrimelensApplication.class, args);

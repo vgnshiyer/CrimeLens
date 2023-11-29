@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
+import com.module.crimelens.Payloads.CrimeEventDto;
 import com.module.crimelens.Services.CrimeEventService;
 
 @CrossOrigin
@@ -29,7 +30,7 @@ public class CrimeEventController {
     private CrimeEventService crimeEventService;
 
     @GetMapping("/")
-    public ResponseEntity<List<CrimeEvent>> getAllCrimeEvents(
+    public ResponseEntity<List<CrimeEventDto>> getAllCrimeEvents(
             @RequestParam(required = false) Integer limit, 
             @RequestParam(required = false) Integer fromYear) {
         return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(fromYear, limit), HttpStatus.OK);

@@ -7,12 +7,13 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.springframework.stereotype.Service;
 
 import com.module.crimelens.Models.CrimeEvent;
+import com.module.crimelens.Models.Location;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
 
 @Service
 public class CrimeLensUtilityService {
-    
+
     public static CrimeEvent mapToCrimeEvent(QuerySolution querySolution) {
         CrimeEvent crimeEvent = new CrimeEvent();
 
@@ -25,7 +26,7 @@ public class CrimeLensUtilityService {
         if (node != null && node.isLiteral()) {
             crimeEvent.setClassification(node.asLiteral().getString());
         }
-        
+
         node = querySolution.get("CrimeDate");
         if (node != null && node.isLiteral()) {
             crimeEvent.setCrimeDate(node.asLiteral().getString());
@@ -99,5 +100,41 @@ public class CrimeLensUtilityService {
         }
 
         return victim;
+    }
+
+    public static Location mapToLocation(QuerySolution querySolution) {
+        Location location = new Location();
+
+        RDFNode node = querySolution.get("LocationID");
+        if (node != null && node.isLiteral()) {
+            location.setId(node.asLiteral().getInt());
+        }
+
+        node = querySolution.get("Latitude");
+        if (node != null && node.isLiteral()) {
+            location.setLat(Double.parseDouble(node.asLiteral().getString()));
+        }
+
+        node = querySolution.get("Longitude");
+        if (node != null && node.isLiteral()) {
+            location.setLon(Double.parseDouble(node.asLiteral().getString()));
+        }
+
+        node = querySolution.get("City");
+        if (node != null && node.isLiteral()) {
+            location.setCity(node.asLiteral().getString());
+        }
+
+        node = querySolution.get("State");
+        if (node != null && node.isLiteral()) {
+            location.setState(node.asLiteral().getString());
+        }
+
+        node = querySolution.get("Street");
+        if (node != null && node.isLiteral()) {
+            location.setStreet(node.asLiteral().getString());
+        }
+
+        return location;
     }
 }

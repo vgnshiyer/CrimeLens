@@ -55,8 +55,8 @@ export default function Dashboard() {
                 }, []);
 
                 const crimeLocationData = response.data.map(crime => ({
-                    lat: crime.latitude,
-                    lng: crime.longitude
+                    lat: crime.location.lat,
+                    lng: crime.location.lon
                 }));
 
                 console.log('crimeCountData', crimeCountData);
