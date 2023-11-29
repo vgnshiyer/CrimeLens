@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
 
-export default function Filter() {
-    const [crimeTypes, setCrimeTypes] = useState([]);
-
-    useEffect(() => {
-        // axios.get('http://localhost:3000/crime_types')
-        //     .then(res => {
-        //         console.log(res.data);
-        //         setCrimeTypes(res.data);
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     })
-    }, [])
+export default function Filter({ crimeTypes, setSelectedCrimeType }) {
+    const handleChange = (event) => {
+        setSelectedCrimeType(event.target.value);
+    };
 
     return (
-        <div>Filter</div>
-    )
+        <div>
+            <label>Crime Type: </label>
+            <RadioGroup onChange={handleChange} defaultValue="ALL">
+                <FormControlLabel value="ALL" control={<Radio />} label="ALL" />
+                {crimeTypes.map((type, index) => (
+                    <FormControlLabel key={index} value={type.label} control={<Radio />} label={type.label} />
+                ))}
+            </RadioGroup>
+        </div>
+    );
 }

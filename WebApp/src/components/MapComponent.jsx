@@ -9,8 +9,8 @@ const MapComponent = ({crimeLocations}) => {
     const mapContainerRef = useRef(null);
     const map = useRef(null);
 
-    const [lng, setLng] = useState(111.93);
-    const [lat, setLat] = useState(33.47);
+    const [lng, setLng] = useState(-73.9);
+    const [lat, setLat] = useState(40.7);
     const [zoom, setZoom] = useState(10);
 
     useEffect(() => {
@@ -38,6 +38,17 @@ const MapComponent = ({crimeLocations}) => {
                             coordinates: [location.lng, location.lat]
                         }
                     }))
+                }
+            });
+
+            map.current.addLayer({
+                id: 'crimeLocations-glow',
+                type: 'circle',
+                source: 'crimeLocations',
+                paint: {
+                    'circle-radius': 15,
+                    'circle-color': '#f00',
+                    'circle-blur': 1 // blur the edges
                 }
             });
     

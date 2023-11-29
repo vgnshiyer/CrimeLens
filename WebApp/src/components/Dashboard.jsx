@@ -29,7 +29,11 @@ export default function Dashboard() {
     */
     const [crimeCountByYear, setCrimeCountByYear] = useState([]);
 
+    const [selectedCrimeType, setSelectedCrimeType] = useState('');
+
     useEffect(() => {
+        console.log('selected crime type: ', selectedCrimeType);
+
         axios.get(api_url + '/' + '?limit=1000&fromYear=2015')
             .then(response => {
                 const uniqueCrimeTypes = response.data.reduce((acc, current) => {
@@ -66,12 +70,12 @@ export default function Dashboard() {
             .catch(error => {
                 console.log(error);
             });
-    }, []);
+    }, [selectedCrimeType]);
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div style={{ width: '20%' }}>
-                <Filter setCrimeCountByYear={setCrimeCountByYear} setCrimeLocations={setCrimeLocations} />
+                <Filter crimeTypes={crimeTypes} setSelectedCrimeType={setSelectedCrimeType} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
                 <MapComponent crimeLocations={crimeLocations} />
