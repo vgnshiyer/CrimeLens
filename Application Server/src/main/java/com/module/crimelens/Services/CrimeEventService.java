@@ -23,8 +23,8 @@ public class CrimeEventService {
     @Autowired
     private PerpetratorService perpetratorService;
     
-    public List<CrimeEvent> getAllCrimeEvents(Integer limit) {
-        return this.crimeEventRepository.findAll(limit);
+    public List<CrimeEvent> getAllCrimeEvents(Integer fromYear, Integer limit) {
+        return this.crimeEventRepository.findAll(fromYear, limit);
     }
 
     public CrimeEvent getCrimeEventById(Integer id) {

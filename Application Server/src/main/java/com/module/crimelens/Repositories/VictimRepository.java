@@ -37,7 +37,7 @@ public class VictimRepository {
     }
     
     public List<Victim> findAll(Integer limit) {
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, limit == null ? 50 : limit);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, null, limit == null ? 50 : limit);
 
         List<Victim> victims = apacheJenaUtilityService.<Victim>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToVictim);
 
@@ -45,19 +45,20 @@ public class VictimRepository {
     }
 
     public Victim findById(Integer id) {
-        Map<String, String> filterClauses = Map.of("VictimID", id.toString());
-
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 1);
-
+        List<String> filterClauses = null;
+        filterClauses = Arrays.asList("?VictimID = " + id.toString());
+    
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 1);
+    
         List<Victim> victims = apacheJenaUtilityService.<Victim>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToVictim);
-
+    
         return victims.isEmpty() ? null : victims.get(0);
     }
 
     public List<Victim> findByAge(Integer age) {
-        Map<String, String> filterClauses = Map.of("Age", age.toString());
+        List<String> filterClauses = Arrays.asList("?Age = " + age.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, null);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, null);
 
         List<Victim> victims = apacheJenaUtilityService.<Victim>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToVictim);
 
@@ -65,9 +66,9 @@ public class VictimRepository {
     }
 
     public List<Victim> findByRace(String race) {
-        Map<String, String> filterClauses = Map.of("Race", "\"" + race + "\"^^xsd:string");
+        List<String> filterClauses = Arrays.asList("?Race = " + race);
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, null);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, null);
 
         List<Victim> victims = apacheJenaUtilityService.<Victim>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToVictim);
 
@@ -75,9 +76,9 @@ public class VictimRepository {
     }
 
     public List<Victim> findByGender(String gender) {
-        Map<String, String> filterClauses = Map.of("Gender", "\"" + gender + "\"^^xsd:string");
+        List<String> filterClauses = Arrays.asList("?Gender = " + gender);
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, null);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, null);
 
         List<Victim> victims = apacheJenaUtilityService.<Victim>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToVictim);
 
