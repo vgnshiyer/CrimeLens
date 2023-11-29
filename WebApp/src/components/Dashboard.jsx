@@ -34,7 +34,13 @@ export default function Dashboard() {
     useEffect(() => {
         console.log('selected crime type: ', selectedCrimeType);
 
-        axios.get(api_url + '/' + '?limit=1000&fromYear=2015')
+        let url = api_url + '/' + '?limit=1000&fromYear=2015';
+
+        if (selectedCrimeType) {
+            url += '&classification=' + selectedCrimeType;
+        }
+
+        axios.get(url)
             .then(response => {
                 const uniqueCrimeTypes = response.data.reduce((acc, current) => {
                     acc[current.classification] = (acc[current.classification] || 0) + 1;

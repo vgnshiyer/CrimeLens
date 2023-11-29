@@ -3,7 +3,7 @@ import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
 
 export default function Filter({ crimeTypes, setSelectedCrimeType }) {
     const handleChange = (event) => {
-        setSelectedCrimeType(event.target.value);
+        setSelectedCrimeType(event.target.value === 'ALL' ? '' : event.target.value);
     };
 
     return (
