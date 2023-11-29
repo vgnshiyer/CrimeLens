@@ -87,12 +87,3 @@ export default function Dashboard() {
         </div>
     );
 }
-
-/**
- * 
- * map component
- * pie chart component
- * bar char component
- * crime type filter
- * crime feed
- */

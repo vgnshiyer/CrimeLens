@@ -1,11 +1,13 @@
 package com.module.crimelens.Repositories;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Utilities.ApacheJenaUtilityService;
 import com.module.crimelens.Utilities.CrimeLensUtilityService;
@@ -38,25 +40,31 @@ public class CrimeEventRepository {
                 "cl:hasPerpetratorID", "Perpetrator");
     }
 
-    public List<CrimeEvent> findAll(Integer fromYear, Integer limit) {
-        
+    public List<CrimeEvent> findAll(Integer fromYear, Integer limit, String classification) {
+
         List<String> bindings = null;
-        List<String> filterClauses = null;
+        List<String> filterClauses = new ArrayList<String>();
         if (fromYear != null) {
-                bindings = Arrays.asList("year(?CrimeDate) AS ?year");
-                filterClauses = Arrays.asList("?year >= " + fromYear);
+            bindings = Arrays.asList("year(?CrimeDate) AS ?year");
+            filterClauses.add("?year >= " + fromYear.toString());
         }
-            
-            String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, bindings, filterClauses, limit == null ? 50 : limit);
-    
-            List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                    .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
-    
-            return crimeEvents;
+
+        if (classification != null) {
+            filterClauses.add("?Classification = \"" + classification + "\"");
+        }
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, bindings, filterClauses,
+                limit == null ? 50 : limit);
+        System.out.println(query);
+
+        List<CrimeEvent> crimeEvents = apacheJenaUtilityService
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
+
+        return crimeEvents;
     }
 
     public CrimeEvent findById(Integer id) {
-        
+
         List<String> filterClauses = null;
         // ?CrimeID = toString(id)
         filterClauses = Arrays.asList("?CrimeID = " + id.toString());
@@ -70,7 +78,7 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByClassification(String classification) {
-        
+
         List<String> filterClauses = null;
         // ?Classification = classification
         filterClauses = Arrays.asList("?Classification = \"" + classification + "\"");
@@ -84,7 +92,7 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByLocation(Integer locationId) {
-        
+
         List<String> filterClauses = null;
         // ?Location = locationId
         filterClauses = Arrays.asList("?Location = " + locationId.toString());
@@ -98,7 +106,7 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByDate(String date) {
-        
+
         List<String> filterClauses = null;
         // ?CrimeDate = date
         filterClauses = Arrays.asList("?CrimeDate = \"" + date + "\"^^xsd:date");
@@ -112,7 +120,7 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByVictim(Integer victimId) {
-        
+
         List<String> filterClauses = null;
         // ?Victim = victimId
         filterClauses = Arrays.asList("?Victim = " + victimId.toString());
@@ -126,7 +134,7 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByPerpetrator(Integer perpetratorId) {
-        
+
         List<String> filterClauses = null;
         // ?Perpetrator = perpetratorId
         filterClauses = Arrays.asList("?Perpetrator = " + perpetratorId.toString());
