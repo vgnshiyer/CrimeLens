@@ -34,7 +34,8 @@ INPUT_FILES_PATH = [
     # "NYPD_Shooting_Incident_Data__Historic_.csv"
     ]
     
-OUTPUT_FILE_PATH = 'fuseki/datasets/crime_lens.ttl'
+# OUTPUT_FILE_PATH = 'fuseki/datasets/crime_lens.ttl'
+OUTPUT_FILE_PATH = 'fuseki/datasets/crime_lens_all.ttl'
 
 column_mappings = {
     'hasCrimeID': [

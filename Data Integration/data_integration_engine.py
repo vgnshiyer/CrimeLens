@@ -82,7 +82,7 @@ class DataLoader:
 
         g.add((victim_uri, ns['hasVictimID'], Literal(victim_id, datatype=XSD.integer)))
         g.add((victim_uri, FOAF.age, Literal(victim_age_group, datatype=XSD.string)))
-        g.add((victim_uri, FOAF.gender, Literal(victim_gender, datatype=XSD.string)))
+        g.add((victim_uri, ns['hasGender'], Literal(victim_gender, datatype=XSD.string)))
         g.add((victim_uri, DBP['Race_(human_categorization)'], Literal(victim_race, datatype=XSD.string)))
 
     def add_perpetrator(self, row, perpetrator_id):
@@ -95,7 +95,7 @@ class DataLoader:
 
         g.add((perpetrator_uri, ns['hasPerpetratorID'], Literal(perpetrator_id, datatype=XSD.integer)))
         g.add((perpetrator_uri, FOAF.age, Literal(perpetrator_age_group, datatype=XSD.string)))
-        g.add((perpetrator_uri, FOAF.gender, Literal(perpetrator_gender, datatype=XSD.string)))
+        g.add((perpetrator_uri, ns['hasGender'], Literal(perpetrator_gender, datatype=XSD.string)))
         g.add((perpetrator_uri, DBP['Race_(human_categorization)'], Literal(perpetrator_race, datatype=XSD.string)))
 
     def add_location(self, row, location_id):
