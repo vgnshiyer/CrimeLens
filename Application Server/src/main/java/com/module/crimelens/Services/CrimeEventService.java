@@ -33,10 +33,10 @@ public class CrimeEventService {
     @Autowired
     private ModelMapper modelMapper;
     
-    public List<CrimeEventDto> getAllCrimeEvents(Integer fromYear, Integer limit, String classification) {
+    public List<CrimeEventDto> getAllCrimeEvents(String date, Integer limit, String classification) {
         List<CrimeEventDto> crimeEventDtos = new ArrayList<CrimeEventDto>();
 
-        List<CrimeEvent> crimeEvents = this.crimeEventRepository.findAll(fromYear, limit, classification);
+        List<CrimeEvent> crimeEvents = this.crimeEventRepository.findAll(date, limit, classification);
 
         for (CrimeEvent crimeEvent : crimeEvents) {
             Integer locationId = crimeEvent.getLocationId();

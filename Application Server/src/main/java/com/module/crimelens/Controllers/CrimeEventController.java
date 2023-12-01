@@ -32,9 +32,9 @@ public class CrimeEventController {
     @GetMapping("/")
     public ResponseEntity<List<CrimeEventDto>> getAllCrimeEvents(
             @RequestParam(required = false) Integer limit,
-            @RequestParam(required = false) Integer fromYear,
+            @RequestParam(required = false) String date,
             @RequestParam(required = false) String classification) {
-        return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(fromYear, limit, classification), HttpStatus.OK);
+        return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(date, limit, classification), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

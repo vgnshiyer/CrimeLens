@@ -10,7 +10,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { UserSquare, Radar } from 'lucide-react';
+import { UserSquare, Star } from 'lucide-react';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
 const Search = styled('div')(({ theme }) => ({
@@ -113,7 +113,7 @@ export default function PrimarySearchAppBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{ backgroundColor: "#669bbc", color: "#5a0404" }}>
+            <AppBar position="static" style={{ backgroundColor: "#212227", color: "#bdd4e7" }}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -123,7 +123,7 @@ export default function PrimarySearchAppBar() {
                         sx={{ mr: 2 }}
                         onClick={() => { navigate('/'); }}
                     >
-                        <Radar />
+                        <Star />
                     </IconButton>
                     <Typography
                         onClick={() => { navigate('/'); }}

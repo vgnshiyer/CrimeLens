@@ -5,10 +5,13 @@ import CrimeFeed from './CrimeFeed'
 import Filter from './Filter'
 import axios from 'axios';
 import { environment } from '../../environment';
+import { getFilteredDate } from '../utils/dateUtils'
 
 const api_url = environment.crimelensapi.url_dev;
 
 export default function Dashboard() {
+
+    const [crimeDateFilter, setCrimeDateFilter] = useState(getFilteredDate('LAST_10_YEARS'));
 
     const [selectedCrime, setSelectedCrime] = useState(null);
 
@@ -19,7 +22,8 @@ export default function Dashboard() {
     const [crimeTypes, setCrimeTypes] = useState([]);
     
     useEffect(() => {
-        let url = api_url + '/' + '?limit=1000&fromYear=2015';
+        let url = api_url + '/' + '?limit=1000&date=' + crimeDateFilter;
+        console.log(url);
 
         axios.get(url)
             .then(response => {
@@ -37,7 +41,7 @@ export default function Dashboard() {
             .catch(error => {
                 console.log(error);
             });
-    }, [])
+    }, [crimeDateFilter])
 
     /*
     DATA for map component
@@ -72,7 +76,7 @@ export default function Dashboard() {
     useEffect(() => {
         setSelectedCrime(null);
 
-        let url = api_url + '/' + '?limit=1000&fromYear=2015';
+        let url = api_url + '/' + '?limit=1000&date=' + crimeDateFilter;
 
         if (selectedCrimeType) {
             url += '&classification=' + selectedCrimeType;
@@ -115,12 +119,12 @@ export default function Dashboard() {
             .catch(error => {
                 console.log(error);
             });
-    }, [selectedCrimeType]);
+    }, [selectedCrimeType, crimeDateFilter]);
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px' }}>
             <div style={{ width: '20%' }}>
-                <Filter crimeTypes={crimeTypes} setSelectedCrimeType={setSelectedCrimeType} />
+                <Filter crimeTypes={crimeTypes} setSelectedCrimeType={setSelectedCrimeType} setCrimeDateFilter={setCrimeDateFilter} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
                 <MapComponent crimeLocations={crimeLocations} selectedCrime={selectedCrime} />
