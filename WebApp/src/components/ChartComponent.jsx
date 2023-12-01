@@ -16,16 +16,6 @@ const chartSetting = {
     height: 400,
 };
 
-const dataset = [
-    { year: '2015', crimes: 100 },
-    { year: '2016', crimes: 120 },
-    { year: '2017', crimes: 150 },
-    { year: '2018', crimes: 180 },
-    { year: '2019', crimes: 200 },
-    { year: '2020', crimes: 220 },
-    { year: '2021', crimes: 250 },
-];
-
 const valueFormatter = (value) => `${value}`;
 
 export default function ChartComponent({crimeTypes, crimeCountByYear}) {

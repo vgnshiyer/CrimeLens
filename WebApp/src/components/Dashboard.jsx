@@ -10,6 +10,8 @@ const api_url = environment.crimelensapi.url_dev;
 
 export default function Dashboard() {
 
+    const [selectedCrime, setSelectedCrime] = useState(null);
+
     /*
     DATA for pie chart component
     List of (classification, count)
@@ -66,7 +68,10 @@ export default function Dashboard() {
     /* Selected crime type filter for (Map, Bar chart, Feed)  */
     const [selectedCrimeType, setSelectedCrimeType] = useState('');
 
+    // main useEffect
     useEffect(() => {
+        setSelectedCrime(null);
+
         let url = api_url + '/' + '?limit=1000&fromYear=2015';
 
         if (selectedCrimeType) {
@@ -96,10 +101,11 @@ export default function Dashboard() {
                 crimeCountData.sort((a, b) => a.year - b.year);
 
                 const crimes = response.data.map(crime => ({
+                    _id: crime.id,
                     classification: crime.classification,
                     description: crime.description,
                     crimeDate: crime.crimeDate,
-                    street: crime.location.street,
+                    location: crime.location
                 }));
 
                 setCrimeCountByYear(crimeCountData);
@@ -112,16 +118,16 @@ export default function Dashboard() {
     }, [selectedCrimeType]);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px' }}>
             <div style={{ width: '20%' }}>
                 <Filter crimeTypes={crimeTypes} setSelectedCrimeType={setSelectedCrimeType} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
-                <MapComponent crimeLocations={crimeLocations} />
+                <MapComponent crimeLocations={crimeLocations} selectedCrime={selectedCrime} />
                 <Chart crimeTypes={crimeTypes} crimeCountByYear={crimeCountByYear} />
             </div>
             <div style={{ width: '20%' }}>
-                <CrimeFeed crimes={crimes} />
+                <CrimeFeed crimes={crimes} onCrimeSelect={setSelectedCrime} />
             </div>
         </div>
     );
