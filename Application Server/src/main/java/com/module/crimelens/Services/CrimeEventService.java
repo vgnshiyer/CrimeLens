@@ -1,5 +1,6 @@
 package com.module.crimelens.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class CrimeEventService {
     
     public List<CrimeEvent> getAllCrimeEvents(Integer limit) {
         return this.crimeEventRepository.findAll(limit);
+    }
+
+    public List<CrimeEvent> getAllRecentCrimeEvents(Integer limit) {
+        return this.crimeEventRepository.findRecent(limit);
     }
 
     public CrimeEvent getCrimeEventById(Integer id) {

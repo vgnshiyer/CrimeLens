@@ -1,6 +1,8 @@
 package com.module.crimelens.Repositories;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,19 @@ public class CrimeEventRepository {
             List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                     .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
     
+            return crimeEvents;
+    }
+
+    public List<CrimeEvent> findRecent(Integer limit) {
+    
+            List<CrimeEvent> crimeEvents = findAll(limit);
+            Collections.sort(crimeEvents, new Comparator<CrimeEvent>() {
+                @Override
+                public int compare(CrimeEvent o1, CrimeEvent o2) {
+                        return o2.getCrimeDate().compareTo(o1.getCrimeDate());
+                }
+           });
+
             return crimeEvents;
     }
 

@@ -32,6 +32,12 @@ public class CrimeEventController {
         return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(limit), HttpStatus.OK);
     }
 
+    @GetMapping("/recent")
+    public ResponseEntity<List<CrimeEvent>> getAllRecentCrimeEvents(
+            @RequestParam(required = false) Integer limit) {
+        return new ResponseEntity<> (this.crimeEventService.getAllRecentCrimeEvents(limit), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CrimeEvent> getCrimeEventById(@PathVariable Integer id) {
         return new ResponseEntity<> (this.crimeEventService.getCrimeEventById(id), HttpStatus.OK);
