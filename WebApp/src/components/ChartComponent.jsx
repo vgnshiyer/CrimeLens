@@ -10,6 +10,7 @@ const chartSetting = {
     yAxis: [
         {
             label: 'Number of Crimes',
+            
         },
     ],
     width: 500,

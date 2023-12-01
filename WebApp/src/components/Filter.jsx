@@ -1,20 +1,61 @@
 import React from "react";
-import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import {
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { getFilteredDate } from "../utils/dateUtils";
 
-export default function Filter({ crimeTypes, setSelectedCrimeType }) {
-    const handleChange = (event) => {
-        setSelectedCrimeType(event.target.value === 'ALL' ? '' : event.target.value);
-    };
-
-    return (
-        <div>
-            <label>Crime Type: </label>
-            <RadioGroup onChange={handleChange} defaultValue="ALL">
-                <FormControlLabel value="ALL" control={<Radio />} label="ALL" />
-                {crimeTypes.map((type, index) => (
-                    <FormControlLabel key={index} value={type.label} control={<Radio />} label={type.label} />
-                ))}
-            </RadioGroup>
-        </div>
+export default function Filter({
+  crimeTypes,
+  setSelectedCrimeType,
+  setCrimeDateFilter,
+}) {
+  const handleCrimeTypeChange = (event) => {
+    setSelectedCrimeType(
+      event.target.value === "ALL" ? "" : event.target.value
     );
+  };
+
+  const handleDateFilterChange = (event) => {
+    let formattedDate = getFilteredDate(event.target.value);
+    setCrimeDateFilter(formattedDate);
+  };
+
+  return (
+    <div>
+      <Typography variant="h5" component="h2">
+        Filter by Crime Type
+      </Typography>
+      <RadioGroup onChange={handleCrimeTypeChange} defaultValue="ALL">
+        <FormControlLabel value="ALL" control={<Radio />} label="ALL" />
+        {crimeTypes.map((type, index) => (
+          <FormControlLabel
+            key={index}
+            value={type.label}
+            control={<Radio />}
+            label={type.label}
+          />
+        ))}
+      </RadioGroup>
+
+      <br />
+      <br />
+      <br />
+      <Typography variant="h5" component="h2">
+        Filter by Date
+      </Typography>
+      <Select onChange={handleDateFilterChange} defaultValue="LAST_10_YEARS">
+        <MenuItem value="LAST_7_DAYS">Last 7 Days</MenuItem>
+        <MenuItem value="LAST_30_DAYS">Last 30 Days</MenuItem>
+        <MenuItem value="LAST_180_DAYS">Last 90 Days</MenuItem>
+        <MenuItem value="LAST_1_YEAR">Last 1 Year</MenuItem>
+        <MenuItem value="LAST_5_YEARS">Last 5 Years</MenuItem>
+        <MenuItem value="LAST_10_YEARS">Last 10 Years</MenuItem>
+      </Select>
+    </div>
+  );
 }

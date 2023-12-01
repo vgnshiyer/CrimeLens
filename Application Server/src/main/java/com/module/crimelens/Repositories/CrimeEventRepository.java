@@ -40,13 +40,12 @@ public class CrimeEventRepository {
                 "cl:hasPerpetratorID", "Perpetrator");
     }
 
-    public List<CrimeEvent> findAll(Integer fromYear, Integer limit, String classification) {
+    public List<CrimeEvent> findAll(String date, Integer limit, String classification) {
 
         List<String> bindings = null;
         List<String> filterClauses = new ArrayList<String>();
-        if (fromYear != null) {
-            bindings = Arrays.asList("year(?CrimeDate) AS ?year");
-            filterClauses.add("?year >= " + fromYear.toString());
+        if (date != null) {
+            filterClauses.add("?CrimeDate >= \"" + date + "\"^^xsd:date");
         }
 
         if (classification != null) {
