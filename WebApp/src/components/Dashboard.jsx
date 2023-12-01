@@ -9,36 +9,15 @@ import { environment } from '../../environment';
 const api_url = environment.crimelensapi.url_dev;
 
 export default function Dashboard() {
-    /*
-    DATA for map component
-    List of (lat, long)
-    Should change based on selected crime classification
-    */
-    const [crimeLocations, setCrimeLocations] = useState([]);
 
     /*
     DATA for pie chart component
     List of (classification, count)
     */
     const [crimeTypes, setCrimeTypes] = useState([]);
-
-    /*
-    DATA for bar chart component
-    List of (year, count)
-    Should change based on selected crime classification
-    */
-    const [crimeCountByYear, setCrimeCountByYear] = useState([]);
-
-    const [selectedCrimeType, setSelectedCrimeType] = useState('');
-
+    
     useEffect(() => {
-        console.log('selected crime type: ', selectedCrimeType);
-
         let url = api_url + '/' + '?limit=1000&fromYear=2015';
-
-        if (selectedCrimeType) {
-            url += '&classification=' + selectedCrimeType;
-        }
 
         axios.get(url)
             .then(response => {
@@ -50,6 +29,53 @@ export default function Dashboard() {
                 const typeData = Object.entries(uniqueCrimeTypes).map(([classification, count], index) => {
                     return { id: index, value: count, label: classification };
                 });
+
+                setCrimeTypes(typeData);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, [])
+
+    /*
+    DATA for map component
+    List of (lat, long)
+    Should change based on selected crime classification
+    */
+    const [crimeLocations, setCrimeLocations] = useState([]);
+
+    /*
+    DATA for bar chart component
+    List of (year, count)
+    Should change based on selected crime classification
+    */
+    const [crimeCountByYear, setCrimeCountByYear] = useState([]);
+
+    /*
+    DATA for crime feed component
+    List of crime objects
+    crime : [{
+        classification: String,
+        description: String,
+        crimeDate: String,
+        street: String,
+    }]
+    */
+    const [crimes, setCrimes] = useState([]);
+
+    /* Selected crime type filter for (Map, Bar chart, Feed)  */
+    const [selectedCrimeType, setSelectedCrimeType] = useState('');
+
+    useEffect(() => {
+        let url = api_url + '/' + '?limit=1000&fromYear=2015';
+
+        if (selectedCrimeType) {
+            url += '&classification=' + selectedCrimeType;
+        }
+
+        axios.get(url)
+            .then(response => {
+                console.log(response.data);
 
                 const crimeCountData = response.data.reduce((acc, current) => {
                     const year = current.crimeDate.split('-')[0];
@@ -69,9 +95,16 @@ export default function Dashboard() {
 
                 crimeCountData.sort((a, b) => a.year - b.year);
 
-                setCrimeTypes(typeData);
+                const crimes = response.data.map(crime => ({
+                    classification: crime.classification,
+                    description: crime.description,
+                    crimeDate: crime.crimeDate,
+                    street: crime.location.street,
+                }));
+
                 setCrimeCountByYear(crimeCountData);
                 setCrimeLocations(crimeLocationData);
+                setCrimes(crimes);
             })
             .catch(error => {
                 console.log(error);
@@ -88,7 +121,7 @@ export default function Dashboard() {
                 <Chart crimeTypes={crimeTypes} crimeCountByYear={crimeCountByYear} />
             </div>
             <div style={{ width: '20%' }}>
-                <CrimeFeed />
+                <CrimeFeed crimes={crimes} />
             </div>
         </div>
     );
