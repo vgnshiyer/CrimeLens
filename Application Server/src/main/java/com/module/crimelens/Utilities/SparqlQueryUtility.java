@@ -16,7 +16,7 @@ public class SparqlQueryUtility {
         return "SELECT ?s ?p ?o WHERE { ?s a :" + entity + " . ?s ?p ?o . }";
     }
 
-    public static String buildQuery(List<String> selectVariables, String entity, Map<String, String> whereClauses, Map<String, String> filterClauses, Integer limit) {
+    public static String buildQuery(List<String> selectVariables, String entity, Map<String, String> whereClauses, List<String> bindings, List<String> filterClauses, Integer limit) {
         StringBuilder query = new StringBuilder(PREFIX);
 
         // SELECT Variables
@@ -34,13 +34,17 @@ public class SparqlQueryUtility {
             query.append(" ").append(whereClause.getKey()).append(" ?").append(whereClause.getValue()).append((i == whereClauses.size() - 1 ? ".\n" : ";\n"));
         }
 
+        // BINDINGS
+        if (bindings != null && !bindings.isEmpty()) {
+            for (String bind : bindings) {
+                query.append("BIND (").append(bind).append(")\n");
+            }
+        }
+
         // FILTER Clauses
         if (filterClauses != null && !filterClauses.isEmpty()) {
-            query.append("FILTER (");
-
-            i = 0;
-            for (Map.Entry<String, String> filterClause : filterClauses.entrySet()) {
-                query.append(" ?").append(filterClause.getKey()).append(" = ").append(filterClause.getValue()).append((i++ == filterClauses.size() - 1 ? " )\n" : " && "));
+            for (String filterClause : filterClauses) {
+                query.append("FILTER (").append(filterClause).append(")\n");
             }
         }
 

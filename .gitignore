@@ -1,2 +1,5 @@
+# webapp dependencies
+node_modules
+
 # fuseki data dir
 data/

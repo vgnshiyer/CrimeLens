@@ -37,7 +37,7 @@ public class PerpetratorRepository {
     }
     
     public List<Perpetrator> findAll(Integer limit) {
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, limit == null ? 50 : limit);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, null, limit == null ? 50 : limit);
 
         List<Perpetrator> perpetrators = apacheJenaUtilityService.<Perpetrator>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToPerpetrator);
 
@@ -45,9 +45,11 @@ public class PerpetratorRepository {
     }
 
     public Perpetrator findById(Integer id) {
-        Map<String, String> filterClauses = Map.of("PerpetratorID", id.toString());
+        List<String> filterClauses = null;
+        // ?PerpetratorID = id
+        filterClauses = Arrays.asList("?PerpetratorID = " + id.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 1);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 1);
 
         List<Perpetrator> perpetrators = apacheJenaUtilityService.<Perpetrator>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToPerpetrator);
 
@@ -55,9 +57,11 @@ public class PerpetratorRepository {
     }
 
     public List<Perpetrator> findByAge(Integer age) {
-        Map<String, String> filterClauses = Map.of("Age", age.toString());
+        List<String> filterClauses = null;
+        // ?Age = age
+        filterClauses = Arrays.asList("?Age = " + age.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, null);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, null);
 
         List<Perpetrator> perpetrators = apacheJenaUtilityService.<Perpetrator>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToPerpetrator);
 
@@ -65,9 +69,10 @@ public class PerpetratorRepository {
     }
 
     public List<Perpetrator> findByRace(String race) {
-        Map<String, String> filterClauses = Map.of("Race", "\"" + race + "\"^^xsd:string");
+        List<String> filterClauses = null;
+        filterClauses = Arrays.asList("?Race = " + race);
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, null);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, null);
 
         List<Perpetrator> perpetrators = apacheJenaUtilityService.<Perpetrator>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToPerpetrator);
 
@@ -75,9 +80,10 @@ public class PerpetratorRepository {
     }
 
     public List<Perpetrator> findByGender(String gender) {
-        Map<String, String> filterClauses = Map.of("Gender", "\"" + gender + "\"^^xsd:string");
+        List<String> filterClauses = null;
+        filterClauses = Arrays.asList("?Gender = " + gender);
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, null);
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, null);
 
         List<Perpetrator> perpetrators = apacheJenaUtilityService.<Perpetrator>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToPerpetrator);
 

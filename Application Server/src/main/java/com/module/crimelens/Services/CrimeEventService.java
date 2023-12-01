@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
+import com.module.crimelens.Payloads.CrimeEventDto;
+import com.module.crimelens.Payloads.LocationDto;
 import com.module.crimelens.Repositories.CrimeEventRepository;
+
+import org.modelmapper.ModelMapper;
 
 @Service
 public class CrimeEventService {
@@ -22,9 +26,32 @@ public class CrimeEventService {
 
     @Autowired
     private PerpetratorService perpetratorService;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private ModelMapper modelMapper;
     
-    public List<CrimeEvent> getAllCrimeEvents(Integer limit) {
-        return this.crimeEventRepository.findAll(limit);
+    public List<CrimeEventDto> getAllCrimeEvents(Integer fromYear, Integer limit, String classification) {
+        List<CrimeEventDto> crimeEventDtos = new ArrayList<CrimeEventDto>();
+
+        List<CrimeEvent> crimeEvents = this.crimeEventRepository.findAll(fromYear, limit, classification);
+
+        for (CrimeEvent crimeEvent : crimeEvents) {
+            Integer locationId = crimeEvent.getLocationId();
+
+            LocationDto locationDto = new LocationDto();
+            locationDto = this.locationService.getLocationById(locationId);
+
+            CrimeEventDto crimeEventDto = new CrimeEventDto();
+            crimeEventDto = modelMapper.map(crimeEvent, CrimeEventDto.class);
+            crimeEventDto.setLocation(locationDto);
+
+            crimeEventDtos.add(crimeEventDto);
+        }
+
+        return crimeEventDtos;
     }
 
     public CrimeEvent getCrimeEventById(Integer id) {

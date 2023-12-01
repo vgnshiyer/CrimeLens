@@ -1,7 +1,7 @@
 package com.module.crimelens.Repositories;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,22 +40,36 @@ public class CrimeEventRepository {
                 "cl:hasPerpetratorID", "Perpetrator");
     }
 
-    public List<CrimeEvent> findAll(Integer limit) {
-            
-            String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, limit == null ? 50 : limit);
-    
-            List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                    .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
-    
-            return crimeEvents;
+    public List<CrimeEvent> findAll(Integer fromYear, Integer limit, String classification) {
+
+        List<String> bindings = null;
+        List<String> filterClauses = new ArrayList<String>();
+        if (fromYear != null) {
+            bindings = Arrays.asList("year(?CrimeDate) AS ?year");
+            filterClauses.add("?year >= " + fromYear.toString());
+        }
+
+        if (classification != null) {
+            filterClauses.add("?Classification = \"" + classification + "\"");
+        }
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, bindings, filterClauses,
+                limit == null ? 50 : limit);
+        System.out.println(query);
+
+        List<CrimeEvent> crimeEvents = apacheJenaUtilityService
+                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
+
+        return crimeEvents;
     }
 
     public CrimeEvent findById(Integer id) {
-        
-        Map<String, String> filterClauses = new HashMap<>();
-        filterClauses.put("CrimeID", id.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 1);
+        List<String> filterClauses = null;
+        // ?CrimeID = toString(id)
+        filterClauses = Arrays.asList("?CrimeID = " + id.toString());
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 1);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
@@ -64,11 +78,12 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByClassification(String classification) {
-        
-        Map<String, String> filterClauses = Map.of(
-                "Classification", "\"" + classification + "\"");
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
+        List<String> filterClauses = null;
+        // ?Classification = classification
+        filterClauses = Arrays.asList("?Classification = \"" + classification + "\"");
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
@@ -77,11 +92,12 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByLocation(Integer locationId) {
-        
-        Map<String, String> filterClauses = Map.of(
-                "Location", locationId.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
+        List<String> filterClauses = null;
+        // ?Location = locationId
+        filterClauses = Arrays.asList("?Location = " + locationId.toString());
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
@@ -90,11 +106,12 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByDate(String date) {
-        
-        Map<String, String> filterClauses = Map.of(
-                "CrimeDate", "\"" + date + "\"^^xsd:date");
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
+        List<String> filterClauses = null;
+        // ?CrimeDate = date
+        filterClauses = Arrays.asList("?CrimeDate = \"" + date + "\"^^xsd:date");
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
@@ -103,11 +120,12 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByVictim(Integer victimId) {
-        
-        Map<String, String> filterClauses = Map.of(
-                "Victim", victimId.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
+        List<String> filterClauses = null;
+        // ?Victim = victimId
+        filterClauses = Arrays.asList("?Victim = " + victimId.toString());
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
@@ -116,11 +134,12 @@ public class CrimeEventRepository {
     }
 
     public List<CrimeEvent> findByPerpetrator(Integer perpetratorId) {
-        
-        Map<String, String> filterClauses = Map.of(
-                "Perpetrator", perpetratorId.toString());
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, filterClauses, 50);
+        List<String> filterClauses = null;
+        // ?Perpetrator = perpetratorId
+        filterClauses = Arrays.asList("?Perpetrator = " + perpetratorId.toString());
+
+        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, null, filterClauses, 50);
 
         List<CrimeEvent> crimeEvents = apacheJenaUtilityService
                 .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);

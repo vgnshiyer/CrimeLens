@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
+import com.module.crimelens.Payloads.CrimeEventDto;
 import com.module.crimelens.Services.CrimeEventService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/crime")
 public class CrimeEventController {
@@ -27,9 +30,11 @@ public class CrimeEventController {
     private CrimeEventService crimeEventService;
 
     @GetMapping("/")
-    public ResponseEntity<List<CrimeEvent>> getAllCrimeEvents(
-            @RequestParam(required = false) Integer limit) {
-        return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(limit), HttpStatus.OK);
+    public ResponseEntity<List<CrimeEventDto>> getAllCrimeEvents(
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer fromYear,
+            @RequestParam(required = false) String classification) {
+        return new ResponseEntity<> (this.crimeEventService.getAllCrimeEvents(fromYear, limit, classification), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
