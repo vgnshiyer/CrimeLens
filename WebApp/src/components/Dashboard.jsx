@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Tab, Tabs } from '@mui/material';
 import MapComponent from './MapComponent'
+import TableComponent from './TableComponent';
 import Chart from './ChartComponent'
 import CrimeFeed from './CrimeFeed'
 import Filter from './Filter'
@@ -10,6 +12,8 @@ import { getFilteredDate } from '../utils/dateUtils'
 const api_url = environment.crimelensapi.url_dev;
 
 export default function Dashboard() {
+
+    const [selectedTab, setSelectedTab] = useState(0);
 
     const [crimeDateFilter, setCrimeDateFilter] = useState(getFilteredDate('LAST_10_YEARS'));
 
@@ -61,6 +65,7 @@ export default function Dashboard() {
     DATA for crime feed component
     List of crime objects
     crime : [{
+        id: String,
         classification: String,
         description: String,
         crimeDate: String,
@@ -121,14 +126,26 @@ export default function Dashboard() {
             });
     }, [selectedCrimeType, crimeDateFilter]);
 
+    const handleTabChange = (event, newValue) => {
+        setSelectedTab(newValue);
+    };
+
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px' }}>
             <div style={{ width: '20%' }}>
                 <Filter crimeTypes={crimeTypes} setSelectedCrimeType={setSelectedCrimeType} setCrimeDateFilter={setCrimeDateFilter} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
-                <MapComponent crimeLocations={crimeLocations} selectedCrime={selectedCrime} />
-                <Chart crimeTypes={crimeTypes} crimeCountByYear={crimeCountByYear} />
+                <Tabs value={selectedTab} onChange={handleTabChange}>
+                    <Tab label="Map & Chart"/>
+                    <Tab label="Table"/>
+                </Tabs>
+                {selectedTab === 0 && (
+                <div>
+                    <MapComponent crimeLocations={crimeLocations} selectedCrime={selectedCrime} />
+                    <Chart crimeTypes={crimeTypes} crimeCountByYear={crimeCountByYear} />
+                </div>)}
+                {selectedTab === 1 && <TableComponent crimes={crimes}/>}
             </div>
             <div style={{ width: '20%' }}>
                 <CrimeFeed crimes={crimes} onCrimeSelect={setSelectedCrime} />

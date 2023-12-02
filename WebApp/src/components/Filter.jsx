@@ -27,8 +27,8 @@ export default function Filter({
 
   return (
     <div>
-      <Typography variant="h5" component="h2">
-        Filter by Crime Type
+      <Typography variant="h6" component="h2" style={{backgroundColor: 'rgba(255, 255, 255, 0.2)', }}>
+        Filter by Crime
       </Typography>
       <RadioGroup onChange={handleCrimeTypeChange} defaultValue="ALL">
         <FormControlLabel value="ALL" control={<Radio />} label="ALL" />
@@ -45,7 +45,7 @@ export default function Filter({
       <br />
       <br />
       <br />
-      <Typography variant="h5" component="h2">
+      <Typography variant="h6" component="h2" style={{backgroundColor: 'rgba(255, 255, 255, 0.2)', }}>
         Filter by Date
       </Typography>
       <Select onChange={handleDateFilterChange} defaultValue="LAST_10_YEARS">
