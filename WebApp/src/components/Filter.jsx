@@ -25,9 +25,12 @@ export default function Filter({
     setCrimeDateFilter(formattedDate);
   };
 
+  // TODO: Add colors to the list items
+  const colors = ["red", "blue", "green", "yellow", "purple"];
+
   return (
     <div>
-      <Typography variant="h6" component="h2" style={{backgroundColor: 'rgba(255, 255, 255, 0.2)', }}>
+      <Typography variant="h6" component="h2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', }}>
         Filter by Crime
       </Typography>
       <RadioGroup onChange={handleCrimeTypeChange} defaultValue="ALL">
@@ -38,6 +41,7 @@ export default function Filter({
             value={type.label}
             control={<Radio />}
             label={type.label}
+            style={{ color: colors[index % colors.length] }}
           />
         ))}
       </RadioGroup>
@@ -45,7 +49,7 @@ export default function Filter({
       <br />
       <br />
       <br />
-      <Typography variant="h6" component="h2" style={{backgroundColor: 'rgba(255, 255, 255, 0.2)', }}>
+      <Typography variant="h6" component="h2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', }}>
         Filter by Date
       </Typography>
       <Select onChange={handleDateFilterChange} defaultValue="LAST_10_YEARS">

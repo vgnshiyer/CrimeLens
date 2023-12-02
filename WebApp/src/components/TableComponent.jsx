@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,7 +9,29 @@ import {
 } from "@mui/material";
 
 
-export default function TableComponent({crimes}) {
+export default function TableComponent({ crimes }) {
+
+  const tableStyle = {
+    minWidth: 650,
+    backgroundColor: '#6e6e6e34',
+    border: '1px solid #ffffffa6',
+    color: '#fff', // Add this line
+  };
+
+  const headerStyle = {
+    backgroundColor: '#c94a4a31',
+    color: 'white',
+    borderRight: '1px solid #ffffffa6',
+    borderLeft: '1px solid #ffffffa6',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  };
+
+  const cellStyle = {
+    borderRight: '1px solid #ffffffa6',
+    borderLeft: '1px solid #ffffffa6',
+    color: '#fff',
+  };
   /*
     [
         {
@@ -25,16 +46,16 @@ export default function TableComponent({crimes}) {
         }
     ]
     */
-    const columnNames = crimes[0] ? Object.keys(crimes[0]) : [];
-    console.log(columnNames);
+  const columnNames = crimes[0] ? Object.keys(crimes[0]) : [];
+  console.log(columnNames);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={tableStyle}>
       <Table>
         <TableHead>
           <TableRow>
             {columnNames.map((columnName, index) => (
-              <TableCell key={index}>{columnName}</TableCell>
+              <TableCell key={index} style={headerStyle}>{columnName}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -42,7 +63,11 @@ export default function TableComponent({crimes}) {
           {crimes.map((row, index) => (
             <TableRow key={index}>
               {columnNames.map((columnName, index) => (
-                <TableCell key={index}>{row[columnName]}</TableCell>
+                <TableCell key={index} style={cellStyle}>
+                  {columnName === 'location' ? row[columnName].street :
+                    (row[columnName] !== undefined && row[columnName] !== null ? row[columnName] : '')
+                  }
+                </TableCell>
               ))}
             </TableRow>
           ))}

@@ -10,7 +10,7 @@ const chartSetting = {
     yAxis: [
         {
             label: 'Number of Crimes',
-            
+
         },
     ],
     width: 500,
@@ -19,7 +19,7 @@ const chartSetting = {
 
 const valueFormatter = (value) => `${value}`;
 
-export default function ChartComponent({crimeTypes, crimeCountByYear}) {
+export default function ChartComponent({ crimeTypes, crimeCountByYear }) {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'auto', width: '100%' }}>
@@ -27,6 +27,7 @@ export default function ChartComponent({crimeTypes, crimeCountByYear}) {
                 series={[
                     {
                         data: crimeTypes,
+
                     },
                 ]}
                 width={400}

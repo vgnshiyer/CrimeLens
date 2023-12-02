@@ -137,8 +137,8 @@ export default function Dashboard() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', width: '60%' }}>
                 <Tabs value={selectedTab} onChange={handleTabChange}>
-                    <Tab label="Map & Chart"/>
-                    <Tab label="Table"/>
+                    <Tab sx={{color: '#fff'}} label="Map & Chart"/>
+                    <Tab sx={{color: '#fff'}} label="Table"/>
                 </Tabs>
                 {selectedTab === 0 && (
                 <div>
