@@ -8,7 +8,6 @@ import Filter from './Filter'
 import axios from 'axios';
 import { environment } from '../../environment';
 import { getFilteredDate, getDateDifferenceInDays, getDayOfTheWeek, getMonth } from '../utils/dateUtils'
-import { truncateString } from '../utils/helper';
 
 const api_url = environment.crimelensapi.url_dev;
 

@@ -1,5 +1,4 @@
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
-import { Dot } from 'lucide-react';
 import styled, { keyframes } from 'styled-components';
 
 function CrimeFeed({ crimes, onCrimeSelect }) {

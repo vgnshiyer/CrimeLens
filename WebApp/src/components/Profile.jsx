@@ -20,7 +20,7 @@ export default function Profile() {
                 flexWrap: "wrap",
                 gap: "20px", justifyContent: "center", marginTop: "50px"
             }}>
-                <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
+                <Card sx={{ minWidth: 275, background: "#2C5E63" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
                             <h2>Chaitya Dharmeshbhai Sanghavi</h2>
@@ -35,7 +35,7 @@ export default function Profile() {
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
+                <Card sx={{ minWidth: 275, background: "#2C5E63" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
                             <h2>Vignesh Venkatachalam Iyer</h2>
@@ -50,7 +50,7 @@ export default function Profile() {
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
+                <Card sx={{ minWidth: 275, background: "#2C5E63" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
                             <h2>Devanshu Amitkumar Desai</h2>
@@ -65,7 +65,7 @@ export default function Profile() {
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
+                <Card sx={{ minWidth: 275, background: "#2C5E63" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
                             <h2>Naga Venkata Sri Sai Eshwar Gulupalli</h2>
@@ -80,7 +80,7 @@ export default function Profile() {
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card sx={{ minWidth: 275, background: "#023d8a81" }}>
+                <Card sx={{ minWidth: 275, background: "#2C5E63" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14, color: "#fdf0d5" }} gutterBottom>
                             <h2>Naga Venkata Dharani Viswanadh Chinta</h2>

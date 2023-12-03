@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { UserSquare, Star } from "lucide-react";
+import { UserSquare } from "lucide-react";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import logo from "../assets/crimelens.png";
 
