@@ -8,7 +8,6 @@ import Filter from './Filter'
 import axios from 'axios';
 import { environment } from '../../environment';
 import { getFilteredDate, getDateDifferenceInDays, getDayOfTheWeek, getMonth } from '../utils/dateUtils'
-import { truncateString } from '../utils/helper';
 
 const api_url = environment.crimelensapi.url_dev;
 
@@ -30,7 +29,6 @@ export default function Dashboard() {
     
     useEffect(() => {
         let url = api_url + '/' + '?limit=' + limit + '&date=' + crimeDateFilter;
-        console.log(url);
 
         axios.get(url)
             .then(response => {

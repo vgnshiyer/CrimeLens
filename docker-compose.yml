@@ -1,14 +1,14 @@
 version: '3.1'
 
 services:
-  # web:
-  #   build: ./WebApp/
-  #   ports:
-  #     - "3000:3000"
-  #   command: >
-  #     sh -c "npm run dev"
-  #   networks:
-  #     - crimelens
+  web:
+    build: ./WebApp/
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "npm run dev"
+    networks:
+      - crimelens
 
   app:
     build: ./Application Server/
