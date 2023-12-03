@@ -3,7 +3,7 @@ body{
     padding: 0;
     font-family: 'Arvo', serif;
     text-align: center;
-    background-color: #313335;
+    background-color: #07080C;
     color: #fdf0d5;
 }
 .App{
@@ -11,4 +11,5 @@ body{
     padding: 0;
     font-family: 'Arvo', serif;
     text-align: center;
+    color: #fdf0d5;
 }

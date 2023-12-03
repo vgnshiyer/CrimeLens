@@ -71,8 +71,10 @@ export default function PrimarySearchAppBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{ backgroundImage: `linear-gradient(rgba(33, 34, 39, 0.288), rgba(33, 34, 39, 0.5)), url(https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/1-berlin-germany-dark-map-jurq-studio.jpg)`,
-                backgroundColor: "#212227", color: "#f0f0f0" }}>
+            <AppBar position="static" style={{
+                backgroundImage: `linear-gradient(rgba(23, 30, 40, 0.288), rgba(13, 16, 23, 0.5), rgba(7, 8, 13, 0.5))`,
+                backgroundColor: "#171E28", color: "#f0f0f0"
+            }}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -86,7 +88,7 @@ export default function PrimarySearchAppBar() {
                     </IconButton>
                     <Typography
                         onClick={() => { navigate('/'); }}
-                        variant="h4"
+                        variant="h5"
                         noWrap
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: "bold", cursor: "pointer" }}

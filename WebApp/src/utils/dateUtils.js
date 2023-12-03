@@ -29,3 +29,29 @@ export function getFilteredDate(filter) {
 
     return formattedDate;
 }
+
+export function getDateDifferenceInDays(date) {
+    const currentDate = new Date();
+    const givenDate = new Date(date);
+
+    const differenceInTime = currentDate.getTime() - givenDate.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+    return differenceInDays;
+}
+
+export function getDayOfTheWeek(date) {
+    const dateParts = date.split('-');
+    const day = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]).getDay();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    return days[day];
+}
+
+export function getMonth(date) {
+    const dateParts = date.split('-');
+    const month = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]).getMonth();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    return months[month];
+}
