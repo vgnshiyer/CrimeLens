@@ -39,8 +39,7 @@ def get_row_information(row, col_keys):
         str: The value of the first column key that exists in the row.
     """
     return_val = ''
-    for col in col_keys:
-        if col in row:
-            return_val = row[col]
-            break
+    if col_keys in row:
+        return_val = row[col_keys]
+        
     return return_val
