@@ -30,7 +30,6 @@ export default function Dashboard() {
     
     useEffect(() => {
         let url = api_url + '/' + '?limit=' + limit + '&date=' + crimeDateFilter;
-        console.log(url);
 
         axios.get(url)
             .then(response => {

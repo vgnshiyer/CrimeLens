@@ -24,7 +24,8 @@ const MapComponent = ({ crimeLocations, selectedCrime }) => {
   useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/outdoors-v12",
+      // style: "mapbox://styles/mapbox/outdoors-v12",
+      style: "mapbox://styles/mapbox/navigation-night-v1",
       center: [lng, lat],
       zoom: zoom,
     });
@@ -53,7 +54,7 @@ const MapComponent = ({ crimeLocations, selectedCrime }) => {
         type: "circle",
         source: "crimeLocations",
         paint: {
-          "circle-radius": 15,
+          "circle-radius": 12,
           "circle-color": "#f00",
           "circle-blur": 1,
         },
@@ -89,7 +90,7 @@ const MapComponent = ({ crimeLocations, selectedCrime }) => {
     <div>
       <div style={{
         width: "100%", height: "400px", border: '2px solid #c9c9c9',
-        borderRadius: '15px',
+        borderRadius: '6px',
         marginTop: '10px',
         marginRight: '15px',
         marginBottom: '10px'

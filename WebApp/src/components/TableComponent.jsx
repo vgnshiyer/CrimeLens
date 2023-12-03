@@ -12,7 +12,7 @@ import {
 export default function TableComponent({ crimes }) {
 
   const tableStyle = {
-    borderRadius: '15px',
+    borderRadius: '6px',
     marginTop: '10px',
     marginRight: '15px',
     marginBottom: '10px',

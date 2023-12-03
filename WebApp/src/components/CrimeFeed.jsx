@@ -21,7 +21,7 @@ function CrimeFeed({ crimes, onCrimeSelect }) {
   `;
 
   return (
-    <div style={{ backgroundColor: '#20070B', borderRadius: '15px', padding: '10px', marginTop: '55px', marginLeft: '15px' }}>
+    <div style={{ backgroundColor: '#20070B', borderRadius: '6px', padding: '10px', marginTop: '55px', marginLeft: '15px' }}>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0', padding: '0' }}>
         <Typography variant="h6" component="h2" style={{ backgroundColor: '#20070B', }}>
           Live Feed

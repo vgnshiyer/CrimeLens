@@ -4,11 +4,11 @@ import {
   ListItem,
   ListItemText,
   FormControl,
-  // Radio,
   Typography,
   Select,
   MenuItem,
 } from "@mui/material";
+
 import { getFilteredDate } from "../utils/dateUtils";
 import styled from "styled-components";
 
@@ -54,10 +54,9 @@ export default function Filter({
     setCrimeDateFilter(formattedDate);
   };
 
-
   return (
     <div>
-      <div style={{ backgroundColor: '#1e2735', borderRadius: '15px', padding: '10px', marginTop: '55px', marginLeft: '15px' }}>
+      <div style={{ backgroundColor: '#1e2735', borderRadius: '6px', padding: '10px', marginTop: '55px', marginLeft: '15px' }}>
         <Typography variant="h6" component="h2" style={{ backgroundColor: '#1e2735', }}>
           Crime Type
         </Typography>
@@ -85,7 +84,7 @@ export default function Filter({
         <br />
         <br />
       </div>
-      <div style={{ backgroundColor: '#1e2735', borderRadius: '15px', padding: '10px', marginTop: '10px', marginLeft: '15px' }}>
+      <div style={{ backgroundColor: '#1e2735', borderRadius: '6px', padding: '10px', marginTop: '10px', marginLeft: '15px' }}>
         <Typography variant="h6" component="h2" style={{ backgroundColor: '#1e2735', }}>
           Filter by Date
         </Typography>
