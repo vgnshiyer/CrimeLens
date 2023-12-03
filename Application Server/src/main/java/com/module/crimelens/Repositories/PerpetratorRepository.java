@@ -15,7 +15,7 @@ import com.module.crimelens.Utilities.SparqlQueryUtility;
 @Repository
 public class PerpetratorRepository {
 
-    private String endpoint = "http://localhost:3030/ds";
+    private String endpoint = "http://datastore:3030/ds";
 
     @Autowired
     private ApacheJenaUtilityService apacheJenaUtilityService;

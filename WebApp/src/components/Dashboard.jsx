@@ -12,6 +12,8 @@ import { truncateString } from '../utils/helper';
 
 const api_url = environment.crimelensapi.url_dev;
 
+const limit = 10;
+
 export default function Dashboard() {
 
     const [selectedTab, setSelectedTab] = useState(0);
@@ -27,11 +29,13 @@ export default function Dashboard() {
     const [crimeTypes, setCrimeTypes] = useState([]);
     
     useEffect(() => {
-        let url = api_url + '/' + '?limit=1000&date=' + crimeDateFilter;
+        let url = api_url + '/' + '?limit=' + limit + '&date=' + crimeDateFilter;
         console.log(url);
 
         axios.get(url)
             .then(response => {
+                console.log(response.data);
+
                 const uniqueCrimeTypes = response.data.reduce((acc, current) => {
                     acc[current.classification] = (acc[current.classification] || 0) + 1;
                     return acc;
@@ -82,7 +86,7 @@ export default function Dashboard() {
     useEffect(() => {
         setSelectedCrime(null);
 
-        let url = api_url + '/' + '?limit=1000&date=' + crimeDateFilter;
+        let url = api_url + '/' + '?limit=' + limit + '&date=' + crimeDateFilter;
 
         if (selectedCrimeType) {
             url += '&classification=' + selectedCrimeType;

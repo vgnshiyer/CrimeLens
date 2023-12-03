@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  RadioGroup,
   List,
   ListItem,
   ListItemText,
@@ -14,7 +13,7 @@ import { getFilteredDate } from "../utils/dateUtils";
 import styled from "styled-components";
 
 const ScrollableDiv = styled.div`
-  height: 404;
+  height: 297px;
   overflow: auto;
 
   &::-webkit-scrollbar {

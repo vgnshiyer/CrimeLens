@@ -33,8 +33,8 @@ function CrimeFeed({ crimes, onCrimeSelect }) {
           {crimes.map((crime, index) => (
             <ListItem button key={crime._id} onClick={() => handleListItemClick(crime)} style={{ color: '#fdf0d5' }}>
               <ListItemText
-                primary={`${crime.classification} - ${crime.description}`}
-                secondary={`${crime.crimeDate}, ${crime.location.street}`}
+                primary={`${crime.classification} ${crime.description === null ? '' : - crime.description}`}
+                secondary={`${crime.crimeDate}, ${crime.location.city}, ${crime.location.state}`}
                 secondaryTypographyProps={{style: {color: 'lightcoral'}}}
               />
             </ListItem>

@@ -14,4 +14,8 @@ public class LocationDto {
     private Double lon;
 
     private String street;
+
+    private String city;
+
+    private String state;
 }
