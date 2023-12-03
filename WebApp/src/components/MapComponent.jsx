@@ -87,7 +87,13 @@ const MapComponent = ({ crimeLocations, selectedCrime }) => {
 
   return (
     <div>
-      <div style={{ width: "100%", height: "400px" }} ref={mapContainerRef} />
+      <div style={{
+        width: "100%", height: "400px", border: '2px solid #c9c9c9',
+        borderRadius: '15px',
+        marginTop: '10px',
+        marginRight: '15px',
+        marginBottom: '10px'
+      }} ref={mapContainerRef} />
     </div>
   );
 };
