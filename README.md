@@ -11,8 +11,6 @@ Crimelens is a Semantic Web Application designed to amalgamate diverse crime dat
 - Utilization of OWL ontology for standardized data representation.
 - Powerful tools for visualizing crime data and generating reports.
 
-## System Architecture
-![System Architecture Diagram](link-to-diagram)
 
 ## Installation and Usage
 Follow these steps to set up the project:
@@ -36,14 +34,13 @@ Follow these steps to set up the project:
         ```
 
 3. **Run the Spring Boot Application:**
-   - Change directory to `Application Server`.
-   - Execute `gradle.bat bootRun`.
+   - For Windows:
+     - Change directory to `Application Server`.
+     - Execute `gradle.bat bootRun`.
+   - For Mac:
+     - Change directory to `Application Server`.
+     - Run `./gradlew bootRun`.
 
-4. **Local Configuration:**
-   - Since the application is running locally, replace all occurrences of `datastore` with `localhost` in the configuration.
-
-5. **Accessing the Data:**
-   - Access the data using the APIs. Refer to the `controllers` folder for the endpoints.
 
 Alternatively, you can set up the entire project by running `docker-compose up` in the root directory.
 
