@@ -49,7 +49,7 @@ Follow these steps to set up the project:
      npm run dev
      ```
 
-Alternatively, you can set up the entire project by running `docker-compose up` in the root directory.
+Alternatively, you can set up the entire project by running `docker-compose up` in the root directory for backend and follow the setup steps for frontend.
 
 # API Documentation
 
