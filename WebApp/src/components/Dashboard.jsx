@@ -136,7 +136,6 @@ export default function Dashboard() {
                 const crimes = response.data.map(crime => ({
                     _id: crime.id,
                     classification: crime.classification,
-                    description: crime.description,
                     crimeDate: crime.crimeDate,
                     lat:crime.lat,
                     lon:crime.lon,

@@ -78,7 +78,7 @@ const MapComponent = ({ crimeLocations, selectedCrime }) => {
   useEffect(() => {
     if (selectedCrime && map.current) {
       map.current.flyTo({
-        center: [selectedCrime.location.lon, selectedCrime.location.lat],
+        center: [selectedCrime.lon, selectedCrime.lat],
         zoom: 15,
         duraction: 500,
         essential: true,
