@@ -123,27 +123,6 @@ Alternatively, you can set up the entire project by running `docker-compose up` 
   - `id` (integer): The ID of the crime event.
 - **Description**: Retrieves perpetrators related to a specific crime event.
 
-#### 10. Create Crime Event
-- **Endpoint**: `/`
-- **Method**: `POST`
-- **Request Body**: `CrimeEvent` object.
-- **Description**: Creates a new crime event record.
-
-#### 11. Update Crime Event
-- **Endpoint**: `/{id}`
-- **Method**: `PUT`
-- **Path Variables**:
-  - `id` (integer): The ID of the crime event to update.
-- **Request Body**: `CrimeEvent` object with updated data.
-- **Description**: Updates the details of a specific crime event.
-
-#### 12. Delete Crime Event
-- **Endpoint**: `/{id}`
-- **Method**: `DELETE`
-- **Path Variables**:
-  - `id` (integer): The ID of the crime event to delete.
-- **Description**: Deletes a specific crime event record.
-
 ## Perpetrator API Endpoints
 
 ### Base URL
@@ -184,27 +163,6 @@ Alternatively, you can set up the entire project by running `docker-compose up` 
   - `gender` (string): The gender of the perpetrators.
 - **Description**: Retrieves perpetrators filtered by gender.
 
-#### 6. Update Perpetrator by ID
-- **Endpoint**: `/{id}`
-- **Method**: `PUT`
-- **Path Variables**:
-  - `id` (integer): The ID of the perpetrator to update.
-- **Request Body**: `Perpetrator` object with updated data.
-- **Description**: Updates the details of a specific perpetrator.
-
-#### 7. Create Perpetrator
-- **Endpoint**: `/`
-- **Method**: `POST`
-- **Request Body**: `Perpetrator` object.
-- **Description**: Adds a new perpetrator record.
-
-#### 8. Delete Perpetrator by ID
-- **Endpoint**: `/{id}`
-- **Method**: `DELETE`
-- **Path Variables**:
-  - `id` (integer): The ID of the perpetrator to delete.
-- **Description**: Deletes a specific perpetrator record.
-
 ## Victim API Endpoints
 
 ### Base URL
@@ -244,27 +202,6 @@ Alternatively, you can set up the entire project by running `docker-compose up` 
 - **Path Variables**:
   - `gender` (string): The gender of the victims.
 - **Description**: Retrieves victims filtered by gender.
-
-#### 6. Update Victim by ID
-- **Endpoint**: `/{id}`
-- **Method**: `PUT`
-- **Path Variables**:
-  - `id` (integer): The ID of the victim to update.
-- **Request Body**: `Victim` object with updated data.
-- **Description**: Updates the details of a specific victim.
-
-#### 7. Create Victim
-- **Endpoint**: `/`
-- **Method**: `POST`
-- **Request Body**: `Victim` object.
-- **Description**: Adds a new victim record.
-
-#### 8. Delete Victim by ID
-- **Endpoint**: `/{id}`
-- **Method**: `DELETE`
-- **Path Variables**:
-  - `id` (integer): The ID of the victim to delete.
-- **Description**: Deletes a specific victim record.
 
 
 ## License
