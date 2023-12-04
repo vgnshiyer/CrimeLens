@@ -57,4 +57,46 @@ public class SparqlQueryUtility {
         
         return query.toString();
     }
+
+    public static String buildQuery(List<String> selectVariables, String entity, List<String> whereClauses, List<String> bindings, List<String> filterClauses, Integer limit) {
+        StringBuilder query = new StringBuilder(PREFIX);
+
+        // SELECT Variables
+        query.append("SELECT ");
+
+        for (String selectVariable : selectVariables) {
+            query.append("?").append(selectVariable).append(" ");
+        }
+
+        // WHERE Clauses
+        query.append("\nWHERE {\n ?").append(entity).append(" a cl:").append(entity).append(" " + (whereClauses.isEmpty() ? ".\n" : ";\n"));
+
+        int i = 0;
+        for (String whereClause : whereClauses) {
+            query.append(" ").append(whereClause).append("\n");
+        }
+
+        // BINDINGS
+        if (bindings != null && !bindings.isEmpty()) {
+            for (String bind : bindings) {
+                query.append("BIND (").append(bind).append(")\n");
+            }
+        }
+
+        // FILTER Clauses
+        if (filterClauses != null && !filterClauses.isEmpty()) {
+            for (String filterClause : filterClauses) {
+                query.append("FILTER (").append(filterClause).append(")\n");
+            }
+        }
+
+        query.append("}");
+
+        // LIMIT
+        if (limit != null) {
+            query.append("\nLIMIT ").append(limit);
+        }
+        
+        return query.toString();
+    }
 }

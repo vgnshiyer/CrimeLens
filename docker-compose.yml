@@ -1,14 +1,14 @@
 version: '3.1'
 
 services:
-  app:
-    build: ./Application Server/
-    ports:
-      - "8080:8080"
-    command: >
-      /bin/bash -c "java -jar app.jar"
-    networks:
-      - crimelens
+  # app:
+  #   build: ./Application Server/
+  #   ports:
+  #     - "8080:8080"
+  #   command: >
+  #     /bin/bash -c "java -jar app.jar"
+  #   networks:
+      # - crimelens
 
   datastore:
     build: ./Data Integration/fuseki/

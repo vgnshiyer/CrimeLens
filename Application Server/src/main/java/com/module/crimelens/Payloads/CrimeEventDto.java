@@ -15,7 +15,14 @@ public class CrimeEventDto {
 
     private String crimeDate;
 
-    private LocationDto location;
+    private Double lat;
 
-    private String description;
+    private Double lon;
+
+    private String city;
+    
+    private String state;
+    
+    private String street;
+
 }

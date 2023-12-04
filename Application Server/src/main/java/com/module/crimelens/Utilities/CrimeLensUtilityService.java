@@ -10,6 +10,7 @@ import com.module.crimelens.Models.CrimeEvent;
 import com.module.crimelens.Models.Location;
 import com.module.crimelens.Models.Perpetrator;
 import com.module.crimelens.Models.Victim;
+import com.module.crimelens.Payloads.CrimeEventDto;
 
 @Service
 public class CrimeLensUtilityService {
@@ -48,6 +49,52 @@ public class CrimeLensUtilityService {
         }
 
         return crimeEvent;
+    }
+
+    public static CrimeEventDto mapToCrimeEventDto(QuerySolution querySolution) {
+        CrimeEventDto crimeEventDto = new CrimeEventDto();
+
+        RDFNode node = querySolution.get("CrimeID");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setId(node.asLiteral().getInt());
+        }
+
+        node = querySolution.get("Classification");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setClassification(node.asLiteral().getString());
+        }
+
+        node = querySolution.get("CrimeDate");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setCrimeDate(node.asLiteral().getString());
+        }
+
+        node = querySolution.get("Latitude");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setLat(Double.parseDouble(node.asLiteral().getString()));
+        }
+
+        node = querySolution.get("Longitude");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setLon(Double.parseDouble(node.asLiteral().getString()));
+        }
+
+        node = querySolution.get("City");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setCity(node.asLiteral().getString());
+        }
+
+        node = querySolution.get("State");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setState(node.asLiteral().getString());
+        }
+
+        node = querySolution.get("Street");
+        if (node != null && node.isLiteral()) {
+            crimeEventDto.setStreet(node.asLiteral().getString());
+        }
+
+        return crimeEventDto;
     }
 
     public static Perpetrator mapToPerpetrator(QuerySolution querySolution) {

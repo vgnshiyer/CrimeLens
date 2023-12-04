@@ -127,8 +127,8 @@ export default function Dashboard() {
                 }, []);
 
                 const crimeLocationData = response.data.map(crime => ({
-                    lat: crime.location.lat,
-                    lng: crime.location.lon
+                    lat: crime.lat,
+                    lng: crime.lon
                 }));
 
                 crimeCountData.sort((a, b) => a.year - b.year);
@@ -138,7 +138,11 @@ export default function Dashboard() {
                     classification: crime.classification,
                     description: crime.description,
                     crimeDate: crime.crimeDate,
-                    location: crime.location
+                    lat:crime.lat,
+                    lon:crime.lon,
+                    street: crime.street,
+                    city: crime.city,
+                    state: crime.state,
                 }));
 
                 setCrimeCount(crimeCountData);

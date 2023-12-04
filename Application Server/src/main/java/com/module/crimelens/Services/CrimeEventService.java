@@ -34,24 +34,10 @@ public class CrimeEventService {
     private ModelMapper modelMapper;
     
     public List<CrimeEventDto> getAllCrimeEvents(String date, Integer limit, String classification) {
-        List<CrimeEventDto> crimeEventDtos = new ArrayList<CrimeEventDto>();
 
-        List<CrimeEvent> crimeEvents = this.crimeEventRepository.findAll(date, limit, classification);
+        List<CrimeEventDto> crimeEvents = this.crimeEventRepository.findAll(date, limit, classification);
 
-        for (CrimeEvent crimeEvent : crimeEvents) {
-            Integer locationId = crimeEvent.getLocationId();
-
-            LocationDto locationDto = new LocationDto();
-            locationDto = this.locationService.getLocationById(locationId);
-
-            CrimeEventDto crimeEventDto = new CrimeEventDto();
-            crimeEventDto = modelMapper.map(crimeEvent, CrimeEventDto.class);
-            crimeEventDto.setLocation(locationDto);
-
-            crimeEventDtos.add(crimeEventDto);
-        }
-
-        return crimeEventDtos;
+        return crimeEvents;
     }
 
     public CrimeEvent getCrimeEventById(Integer id) {

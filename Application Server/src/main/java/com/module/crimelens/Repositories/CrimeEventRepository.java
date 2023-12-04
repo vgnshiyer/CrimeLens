@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.module.crimelens.Models.CrimeEvent;
+import com.module.crimelens.Payloads.CrimeEventDto;
 import com.module.crimelens.Utilities.ApacheJenaUtilityService;
 import com.module.crimelens.Utilities.CrimeLensUtilityService;
 import com.module.crimelens.Utilities.SparqlQueryUtility;
@@ -16,7 +17,7 @@ import com.module.crimelens.Utilities.SparqlQueryUtility;
 @Repository
 public class CrimeEventRepository {
 
-    private String endpoint = "http://datastore:3030/ds";
+    private String endpoint = "http://localhost:3030/ds";
 
     @Autowired
     private ApacheJenaUtilityService apacheJenaUtilityService;
@@ -40,7 +41,10 @@ public class CrimeEventRepository {
                 "cl:hasPerpetratorID", "Perpetrator");
     }
 
-    public List<CrimeEvent> findAll(String date, Integer limit, String classification) {
+    public List<CrimeEventDto> findAll(String date, Integer limit, String classification) {
+
+        List<String> customSelectVariables = Arrays.asList("Classification", "CrimeDate", "CrimeID", "Longitude",
+                "Latitude", "City", "State");
 
         List<String> bindings = null;
         List<String> filterClauses = new ArrayList<String>();
@@ -52,12 +56,41 @@ public class CrimeEventRepository {
             filterClauses.add("?Classification = \"" + classification + "\"");
         }
 
-        String query = SparqlQueryUtility.buildQuery(selectVariables, entity, whereClauses, bindings, filterClauses,
+        /*
+         ?CrimeEvent a cl:CrimeEvent ;
+              cl:hasClassification ?Classification ;
+              cl:hasCrimeDate ?CrimeDate ;
+              cl:hasCrimeID ?CrimeID ;
+              cl:hasLocationID ?LocationID .
+  
+  ?Location a cl:Location ;
+            cl:hasLocationID ?LocationID ;
+            dbp:Longitude ?Longitude ;
+            dbp:Latitude ?Latitude ;
+            cl:hasCity ?City ;
+            cl:hasState ?State .
+         */
+        List<String> customWhereClauses = Arrays.asList(
+                "cl:hasClassification ?Classification ;",
+                "cl:hasCrimeDate ?CrimeDate ;",
+                "cl:hasCrimeID ?CrimeID ;",
+                "cl:hasLocationID ?LocationID .",
+                "?Location a cl:Location ;",
+                "cl:hasLocationID ?LocationID ;",
+                "dbp:Longitude ?Longitude ;",
+                "dbp:Latitude ?Latitude ;",
+                "cl:hasCity ?City ;",
+                "cl:hasState ?State .");
+                
+
+        String query = SparqlQueryUtility.buildQuery(customSelectVariables, entity, customWhereClauses, bindings, filterClauses,
                 limit == null ? 50 : limit);
+
+        System.out.println("CUSTOM QUERY");
         System.out.println(query);
 
-        List<CrimeEvent> crimeEvents = apacheJenaUtilityService
-                .<CrimeEvent>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEvent);
+        List<CrimeEventDto> crimeEvents = apacheJenaUtilityService
+                .<CrimeEventDto>getQueryResult(query, endpoint, CrimeLensUtilityService::mapToCrimeEventDto);
 
         return crimeEvents;
     }
